@@ -552,6 +552,11 @@
                 <button class="tab-btn active" onclick="showTab('keyboard')">⌨️ 심리학 키보드</button>
                 <button class="tab-btn" onclick="showTab('diary')">📔 감정 일기</button>
                 <button class="tab-btn" onclick="showTab('stats')">📊 감정 통계</button>
+                <button class="tab-btn" onclick="showTab('test')">🧪 심리 테스트</button>
+                <button class="tab-btn" onclick="showTab('analysis')">🔍 자기 대화 분석</button>
+                <button class="tab-btn" onclick="showTab('pattern')">📈 감정 패턴</button>
+                <button class="tab-btn" onclick="showTab('goals')">🎯 목표 설정</button>
+                <button class="tab-btn" onclick="showTab('stress')">😰 스트레스 관리</button>
                 <button class="tab-btn" onclick="showTab('dictionary')">📚 심리학 사전</button>
                 <button class="tab-btn" onclick="showTab('mindfulness')">🧘 마음챙김</button>
                 <button class="tab-btn" onclick="showTab('tips')">💡 심리학 팁</button>
@@ -709,6 +714,164 @@
                         • 긴장된 근육을 하나씩 이완시켜보세요<br>
                         • 편안한 호흡에 집중하며 잠에 빠져드세요
                     </p>
+                </div>
+            </div>
+
+            <!-- 심리 테스트 탭 -->
+            <div id="test" class="tab-content">
+                <h3>🧪 심리 테스트</h3>
+                <p style="color: #666; margin-bottom: 20px;">간단한 자기 진단 테스트를 통해 자신의 심리 상태를 알아보세요.</p>
+                
+                <div class="test-card" style="margin-bottom: 20px; padding: 20px; background: #f8f9fa; border-radius: 12px;">
+                    <h4>📊 스트레스 레벨 테스트</h4>
+                    <p style="color: #666; margin: 10px 0;">최근 2주 동안의 경험을 바탕으로 답변해주세요.</p>
+                    <div id="stressTestQuestions"></div>
+                    <button class="btn btn-primary" onclick="startStressTest()" id="startStressTestBtn">테스트 시작</button>
+                    <div id="stressTestResult" style="display: none; margin-top: 20px; padding: 20px; background: white; border-radius: 8px;"></div>
+                </div>
+
+                <div class="test-card" style="margin-bottom: 20px; padding: 20px; background: #f8f9fa; border-radius: 12px;">
+                    <h4>😊 긍정성 테스트</h4>
+                    <p style="color: #666; margin: 10px 0;">일상생활에서 긍정적인 사고를 얼마나 하는지 확인해보세요.</p>
+                    <div id="positivityTestQuestions"></div>
+                    <button class="btn btn-primary" onclick="startPositivityTest()" id="startPositivityTestBtn">테스트 시작</button>
+                    <div id="positivityTestResult" style="display: none; margin-top: 20px; padding: 20px; background: white; border-radius: 8px;"></div>
+                </div>
+
+                <div class="test-card" style="margin-bottom: 20px; padding: 20px; background: #f8f9fa; border-radius: 12px;">
+                    <h4>💪 자존감 테스트</h4>
+                    <p style="color: #666; margin: 10px 0;">자신에 대한 평가와 인식을 확인해보세요.</p>
+                    <div id="selfEsteemTestQuestions"></div>
+                    <button class="btn btn-primary" onclick="startSelfEsteemTest()" id="startSelfEsteemTestBtn">테스트 시작</button>
+                    <div id="selfEsteemTestResult" style="display: none; margin-top: 20px; padding: 20px; background: white; border-radius: 8px;"></div>
+                </div>
+            </div>
+
+            <!-- 자기 대화 분석 탭 -->
+            <div id="analysis" class="tab-content">
+                <h3>🔍 자기 대화 분석</h3>
+                <p style="color: #666; margin-bottom: 20px;">작성한 텍스트를 분석하여 자기 대화 패턴을 파악하고 개선점을 찾아보세요.</p>
+                
+                <div class="form-group">
+                    <label>분석할 텍스트를 입력하세요</label>
+                    <textarea id="selfTalkInput" placeholder="예: 나는 항상 실수만 해. 다른 사람들은 다 잘하는데 나만 못해. 나는 가치 없는 사람이야..." style="min-height: 150px;"></textarea>
+                </div>
+                
+                <button class="btn btn-primary" onclick="analyzeSelfTalk()">🔍 자기 대화 분석하기</button>
+                
+                <div id="selfTalkAnalysis" style="display: none; margin-top: 30px;">
+                    <div class="analysis-card" style="padding: 20px; background: #f8f9fa; border-radius: 12px; margin-bottom: 20px;">
+                        <h4>📊 분석 결과</h4>
+                        <div id="selfTalkResult"></div>
+                    </div>
+                    
+                    <div class="analysis-card" style="padding: 20px; background: #fff3cd; border-radius: 12px; margin-bottom: 20px;">
+                        <h4>💡 개선 제안</h4>
+                        <div id="selfTalkSuggestions"></div>
+                    </div>
+                    
+                    <div class="analysis-card" style="padding: 20px; background: #d1ecf1; border-radius: 12px;">
+                        <h4>✨ 긍정적 대안</h4>
+                        <div id="selfTalkAlternatives"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 감정 패턴 탭 -->
+            <div id="pattern" class="tab-content">
+                <h3>📈 감정 패턴 분석</h3>
+                <p style="color: #666; margin-bottom: 20px;">감정 일기 데이터를 분석하여 감정 패턴과 인사이트를 확인하세요.</p>
+                
+                <div id="patternInsights" style="margin-bottom: 30px;"></div>
+                
+                <div class="pattern-card" style="padding: 20px; background: #f8f9fa; border-radius: 12px; margin-bottom: 20px;">
+                    <h4>📅 요일별 감정 패턴</h4>
+                    <div id="weeklyPattern"></div>
+                </div>
+                
+                <div class="pattern-card" style="padding: 20px; background: #f8f9fa; border-radius: 12px; margin-bottom: 20px;">
+                    <h4>🔄 감정 변화 추이</h4>
+                    <div id="emotionTrendChart"></div>
+                </div>
+                
+                <div class="pattern-card" style="padding: 20px; background: #f8f9fa; border-radius: 12px;">
+                    <h4>💭 감정 트리거 분석</h4>
+                    <div id="emotionTriggers"></div>
+                </div>
+            </div>
+
+            <!-- 목표 설정 탭 -->
+            <div id="goals" class="tab-content">
+                <h3>🎯 심리학 기반 목표 설정</h3>
+                <p style="color: #666; margin-bottom: 20px;">SMART 원칙을 활용하여 효과적인 목표를 설정하고 추적하세요.</p>
+                
+                <div class="form-group">
+                    <label>목표 제목</label>
+                    <input type="text" id="goalTitle" placeholder="예: 매일 10분 명상하기">
+                </div>
+                
+                <div class="form-group">
+                    <label>목표 설명</label>
+                    <textarea id="goalDescription" placeholder="구체적인 목표와 이유를 설명하세요..." style="min-height: 100px;"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>목표 유형</label>
+                    <select id="goalType" style="width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 8px;">
+                        <option value="mental">정신 건강</option>
+                        <option value="emotional">감정 관리</option>
+                        <option value="social">사회성</option>
+                        <option value="selfcare">자기 돌봄</option>
+                        <option value="growth">성장</option>
+                        <option value="other">기타</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>목표 기간</label>
+                    <input type="date" id="goalDeadline" style="width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 8px;">
+                </div>
+                
+                <button class="btn btn-primary" onclick="addGoal()">목표 추가</button>
+                
+                <div id="goalsList" style="margin-top: 30px;"></div>
+            </div>
+
+            <!-- 스트레스 관리 탭 -->
+            <div id="stress" class="tab-content">
+                <h3>😰 스트레스 관리</h3>
+                <p style="color: #666; margin-bottom: 20px;">현재 스트레스 레벨을 측정하고 관리 방법을 확인하세요.</p>
+                
+                <div class="stress-card" style="padding: 20px; background: #f8f9fa; border-radius: 12px; margin-bottom: 20px;">
+                    <h4>📊 현재 스트레스 레벨</h4>
+                    <div style="margin: 20px 0;">
+                        <label style="display: block; margin-bottom: 10px;">스트레스 레벨 (1-10)</label>
+                        <input type="range" id="stressLevel" min="1" max="10" value="5" style="width: 100%;" oninput="updateStressLevel(this.value)">
+                        <div style="display: flex; justify-content: space-between; margin-top: 5px;">
+                            <span style="font-size: 0.9em; color: #666;">낮음 (1)</span>
+                            <span id="stressValue" style="font-size: 1.2em; font-weight: 600; color: #667eea;">5</span>
+                            <span style="font-size: 0.9em; color: #666;">높음 (10)</span>
+                        </div>
+                    </div>
+                    <div id="stressDescription" style="padding: 15px; background: white; border-radius: 8px; margin-top: 15px;"></div>
+                </div>
+                
+                <div class="stress-card" style="padding: 20px; background: #f8f9fa; border-radius: 12px; margin-bottom: 20px;">
+                    <h4>📝 스트레스 원인 기록</h4>
+                    <div class="form-group">
+                        <textarea id="stressCause" placeholder="오늘 스트레스를 받은 원인을 기록하세요..." style="min-height: 100px;"></textarea>
+                    </div>
+                    <button class="btn btn-primary" onclick="saveStressRecord()">기록 저장</button>
+                </div>
+                
+                <div class="stress-card" style="padding: 20px; background: #f8f9fa; border-radius: 12px; margin-bottom: 20px;">
+                    <h4>💡 맞춤형 스트레스 관리 방법</h4>
+                    <div id="stressManagementTips"></div>
+                </div>
+                
+                <div class="stress-card" style="padding: 20px; background: #f8f9fa; border-radius: 12px;">
+                    <h4>📈 스트레스 추이</h4>
+                    <div id="stressHistory"></div>
                 </div>
             </div>
 
@@ -1505,6 +1668,511 @@
             startBtn.style.display = 'inline-block';
             stopBtn.style.display = 'none';
         }
+
+        // 심리 테스트 함수들
+        const stressTestQuestions = [
+            { q: '최근 2주 동안 불안하거나 걱정되는 일이 많았나요?', options: ['전혀 없음', '가끔', '자주', '거의 항상'] },
+            { q: '수면에 문제가 있었나요?', options: ['전혀 없음', '가끔', '자주', '거의 항상'] },
+            { q: '집중하기 어려웠나요?', options: ['전혀 없음', '가끔', '자주', '거의 항상'] },
+            { q: '피로감이나 에너지 부족을 느꼈나요?', options: ['전혀 없음', '가끔', '자주', '거의 항상'] },
+            { q: '일상 활동에 대한 관심이나 즐거움이 줄어들었나요?', options: ['전혀 없음', '가끔', '자주', '거의 항상'] }
+        ];
+
+        const positivityTestQuestions = [
+            { q: '나는 긍정적인 사건에 집중하는 편이다.', options: ['전혀 아님', '가끔', '자주', '항상'] },
+            { q: '어려운 상황에서도 긍정적인 측면을 찾으려고 노력한다.', options: ['전혀 아님', '가끔', '자주', '항상'] },
+            { q: '미래에 대해 낙관적인 생각을 한다.', options: ['전혀 아님', '가끔', '자주', '항상'] },
+            { q: '작은 것에도 감사하는 마음을 갖는다.', options: ['전혀 아님', '가끔', '자주', '항상'] },
+            { q: '실패를 배움의 기회로 본다.', options: ['전혀 아님', '가끔', '자주', '항상'] }
+        ];
+
+        const selfEsteemTestQuestions = [
+            { q: '나는 자신의 가치를 인정한다.', options: ['전혀 아님', '가끔', '자주', '항상'] },
+            { q: '나는 자신의 강점을 알고 있다.', options: ['전혀 아님', '가끔', '자주', '항상'] },
+            { q: '나는 실수를 해도 자신을 용서할 수 있다.', options: ['전혀 아님', '가끔', '자주', '항상'] },
+            { q: '나는 다른 사람과 비교하지 않으려고 노력한다.', options: ['전혀 아님', '가끔', '자주', '항상'] },
+            { q: '나는 자신의 의견을 표현할 수 있다.', options: ['전혀 아님', '가끔', '자주', '항상'] }
+        ];
+
+        let currentTest = null;
+        let currentTestAnswers = [];
+        let currentQuestionIndex = 0;
+
+        function startStressTest() {
+            currentTest = 'stress';
+            currentTestAnswers = [];
+            currentQuestionIndex = 0;
+            renderTest('stressTestQuestions', stressTestQuestions);
+            document.getElementById('startStressTestBtn').style.display = 'none';
+        }
+
+        function startPositivityTest() {
+            currentTest = 'positivity';
+            currentTestAnswers = [];
+            currentQuestionIndex = 0;
+            renderTest('positivityTestQuestions', positivityTestQuestions);
+            document.getElementById('startPositivityTestBtn').style.display = 'none';
+        }
+
+        function startSelfEsteemTest() {
+            currentTest = 'selfEsteem';
+            currentTestAnswers = [];
+            currentQuestionIndex = 0;
+            renderTest('selfEsteemTestQuestions', selfEsteemTestQuestions);
+            document.getElementById('startSelfEsteemTestBtn').style.display = 'none';
+        }
+
+        function renderTest(containerId, questions) {
+            const container = document.getElementById(containerId);
+            if (currentQuestionIndex >= questions.length) {
+                showTestResult();
+                return;
+            }
+
+            const question = questions[currentQuestionIndex];
+            container.innerHTML = `
+                <div style="margin: 20px 0; padding: 20px; background: white; border-radius: 8px;">
+                    <p style="font-weight: 600; margin-bottom: 15px;">${currentQuestionIndex + 1}. ${question.q}</p>
+                    ${question.options.map((opt, idx) => `
+                        <label style="display: block; padding: 10px; margin: 5px 0; background: #f8f9fa; border-radius: 8px; cursor: pointer;">
+                            <input type="radio" name="testAnswer" value="${idx}" onchange="answerQuestion(${idx})">
+                            ${opt}
+                        </label>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function answerQuestion(answerIndex) {
+            currentTestAnswers.push(answerIndex);
+            currentQuestionIndex++;
+            
+            const questions = currentTest === 'stress' ? stressTestQuestions :
+                            currentTest === 'positivity' ? positivityTestQuestions :
+                            selfEsteemTestQuestions;
+            
+            setTimeout(() => renderTest(
+                currentTest === 'stress' ? 'stressTestQuestions' :
+                currentTest === 'positivity' ? 'positivityTestQuestions' :
+                'selfEsteemTestQuestions',
+                questions
+            ), 300);
+        }
+
+        function showTestResult() {
+            const totalScore = currentTestAnswers.reduce((sum, ans) => sum + ans, 0);
+            const maxScore = currentTestAnswers.length * 3;
+            const percentage = Math.round((totalScore / maxScore) * 100);
+            
+            let resultText = '';
+            let resultColor = '';
+            
+            if (currentTest === 'stress') {
+                if (percentage < 30) {
+                    resultText = '낮은 스트레스 레벨입니다. 현재 스트레스 관리가 잘 되고 있습니다.';
+                    resultColor = '#28a745';
+                } else if (percentage < 60) {
+                    resultText = '보통 스트레스 레벨입니다. 규칙적인 휴식과 스트레스 관리 방법을 실천해보세요.';
+                    resultColor = '#ffc107';
+                } else {
+                    resultText = '높은 스트레스 레벨입니다. 전문가 상담을 고려하거나 스트레스 관리 방법을 적극적으로 활용해보세요.';
+                    resultColor = '#dc3545';
+                }
+            } else if (currentTest === 'positivity') {
+                if (percentage > 70) {
+                    resultText = '매우 긍정적인 사고를 하고 있습니다. 이 긍정성을 유지하세요!';
+                    resultColor = '#28a745';
+                } else if (percentage > 40) {
+                    resultText = '보통 수준의 긍정성을 보이고 있습니다. 긍정적 사고를 더 연습해보세요.';
+                    resultColor = '#ffc107';
+                } else {
+                    resultText = '긍정적 사고를 향상시킬 여지가 있습니다. 감사 일기나 긍정적 자기 대화를 실천해보세요.';
+                    resultColor = '#dc3545';
+                }
+            } else {
+                if (percentage > 70) {
+                    resultText = '건강한 자존감을 가지고 있습니다. 자신을 소중히 여기는 마음을 유지하세요.';
+                    resultColor = '#28a745';
+                } else if (percentage > 40) {
+                    resultText = '보통 수준의 자존감입니다. 자신의 강점을 인식하고 긍정적 자기 대화를 늘려보세요.';
+                    resultColor = '#ffc107';
+                } else {
+                    resultText = '자존감 향상이 필요합니다. 작은 성취를 인정하고 자신에게 친절하게 대하세요.';
+                    resultColor = '#dc3545';
+                }
+            }
+
+            const resultDiv = document.getElementById(
+                currentTest === 'stress' ? 'stressTestResult' :
+                currentTest === 'positivity' ? 'positivityTestResult' :
+                'selfEsteemTestResult'
+            );
+            
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = `
+                <h4 style="color: ${resultColor}; margin-bottom: 15px;">테스트 결과</h4>
+                <p style="font-size: 1.1em; line-height: 1.8; margin-bottom: 15px;">${resultText}</p>
+                <p style="color: #666;">점수: ${totalScore}/${maxScore} (${percentage}%)</p>
+                <button class="btn btn-primary" onclick="location.reload()" style="margin-top: 15px;">다시 테스트</button>
+            `;
+        }
+
+        // 자기 대화 분석
+        function analyzeSelfTalk() {
+            const text = document.getElementById('selfTalkInput').value.trim();
+            if (!text) {
+                alert('분석할 텍스트를 입력해주세요.');
+                return;
+            }
+
+            const negativePatterns = {
+                '항상': '과도한 일반화',
+                '절대': '흑백사고',
+                '모두': '과도한 일반화',
+                '아무도': '과도한 일반화',
+                '실패': '부정적 라벨링',
+                '못해': '자기 비하',
+                '가치 없': '자기 비하',
+                '무능': '자기 비하',
+                '바보': '자기 비하',
+                '쓸모 없': '자기 비하'
+            };
+
+            const detectedPatterns = [];
+            const suggestions = [];
+            const alternatives = [];
+
+            for (const [keyword, pattern] of Object.entries(negativePatterns)) {
+                if (text.includes(keyword)) {
+                    detectedPatterns.push(pattern);
+                }
+            }
+
+            if (detectedPatterns.length === 0) {
+                detectedPatterns.push('부정적 패턴이 감지되지 않았습니다.');
+            }
+
+            // 개선 제안
+            if (text.includes('항상') || text.includes('절대')) {
+                suggestions.push('"항상", "절대" 같은 극단적 표현을 피하고 구체적인 상황을 설명해보세요.');
+            }
+            if (text.includes('실패') || text.includes('못해')) {
+                suggestions.push('실수를 배움의 기회로 보는 관점을 연습해보세요.');
+            }
+            if (text.includes('가치 없') || text.includes('무능')) {
+                suggestions.push('자신의 강점과 성취를 인식하고 긍정적 자기 대화를 실천해보세요.');
+            }
+
+            // 긍정적 대안
+            let positiveText = text;
+            positiveText = positiveText.replace(/나는 항상 실수만 해/g, '나는 때때로 실수를 하지만 배울 수 있어');
+            positiveText = positiveText.replace(/나는 가치 없는 사람이야/g, '나는 나만의 가치가 있는 사람이야');
+            positiveText = positiveText.replace(/다른 사람들은 다 잘하는데 나만 못해/g, '각자 다른 속도로 성장하고 있어');
+            positiveText = positiveText.replace(/항상/g, '때때로');
+            positiveText = positiveText.replace(/절대/g, '거의');
+
+            if (positiveText === text) {
+                alternatives.push('긍정적인 관점으로 다시 표현해보세요.');
+            } else {
+                alternatives.push(`"${positiveText}"`);
+            }
+
+            document.getElementById('selfTalkResult').innerHTML = `
+                <p><strong>감지된 패턴:</strong> ${[...new Set(detectedPatterns)].join(', ')}</p>
+                <p style="margin-top: 10px;"><strong>부정적 표현:</strong> ${detectedPatterns.length}개</p>
+            `;
+            
+            document.getElementById('selfTalkSuggestions').innerHTML = suggestions.length > 0 
+                ? suggestions.map(s => `<p>• ${s}</p>`).join('')
+                : '<p>긍정적인 자기 대화를 유지하고 있습니다.</p>';
+            
+            document.getElementById('selfTalkAlternatives').innerHTML = alternatives.map(a => `<p>${a}</p>`).join('');
+            document.getElementById('selfTalkAnalysis').style.display = 'block';
+        }
+
+        // 감정 패턴 분석
+        function loadPatternAnalysis() {
+            const diaries = JSON.parse(localStorage.getItem('gpt_keyboard_diaries') || '[]');
+            
+            if (diaries.length === 0) {
+                document.getElementById('patternInsights').innerHTML = '<p style="padding: 20px; text-align: center; color: #999;">감정 일기 데이터가 없습니다. 일기를 작성하면 패턴 분석이 가능합니다.</p>';
+                return;
+            }
+
+            // 인사이트
+            const emotionCount = {};
+            diaries.forEach(d => {
+                emotionCount[d.emotion] = (emotionCount[d.emotion] || 0) + 1;
+            });
+            const mostEmotion = Object.entries(emotionCount).sort((a, b) => b[1] - a[1])[0];
+            
+            document.getElementById('patternInsights').innerHTML = `
+                <div style="padding: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 12px;">
+                    <h4 style="margin-bottom: 15px;">💡 주요 인사이트</h4>
+                    <p>가장 자주 기록된 감정: <strong>${mostEmotion[0]}</strong> (${mostEmotion[1]}회)</p>
+                    <p style="margin-top: 10px;">총 일기 수: <strong>${diaries.length}개</strong></p>
+                </div>
+            `;
+
+            // 요일별 패턴
+            const weeklyEmotions = {};
+            diaries.forEach(d => {
+                const date = new Date(d.timestamp);
+                const day = ['일', '월', '화', '수', '목', '금', '토'][date.getDay()];
+                if (!weeklyEmotions[day]) weeklyEmotions[day] = {};
+                weeklyEmotions[day][d.emotion] = (weeklyEmotions[day][d.emotion] || 0) + 1;
+            });
+
+            document.getElementById('weeklyPattern').innerHTML = Object.entries(weeklyEmotions)
+                .map(([day, emotions]) => {
+                    const mainEmotion = Object.entries(emotions).sort((a, b) => b[1] - a[1])[0];
+                    return `<div style="padding: 10px; margin: 5px 0; background: white; border-radius: 8px;">
+                        <strong>${day}요일</strong>: ${mainEmotion ? mainEmotion[0] : '-'} (${mainEmotion ? mainEmotion[1] : 0}회)
+                    </div>`;
+                }).join('') || '<p style="color: #999;">데이터가 부족합니다.</p>';
+
+            // 감정 추이
+            const recentDiaries = diaries.slice(-30).reverse();
+            document.getElementById('emotionTrendChart').innerHTML = recentDiaries
+                .map(d => `<div style="padding: 10px; margin: 5px 0; background: white; border-radius: 8px; display: flex; justify-content: space-between;">
+                    <span>${d.date}</span>
+                    <span style="font-weight: 600; color: #667eea;">${d.emotion}</span>
+                </div>`).join('') || '<p style="color: #999;">데이터가 부족합니다.</p>';
+
+            // 트리거 분석 (키워드 기반)
+            const triggerWords = ['일', '일상', '친구', '가족', '일', '공부', '스트레스', '걱정'];
+            const triggers = {};
+            diaries.forEach(d => {
+                triggerWords.forEach(word => {
+                    if (d.content.includes(word)) {
+                        triggers[word] = (triggers[word] || 0) + 1;
+                    }
+                });
+            });
+
+            document.getElementById('emotionTriggers').innerHTML = Object.entries(triggers)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 5)
+                .map(([word, count]) => `<div style="padding: 10px; margin: 5px 0; background: white; border-radius: 8px;">
+                    <strong>${word}</strong>: ${count}회 언급
+                </div>`).join('') || '<p style="color: #999;">트리거 패턴을 찾을 수 없습니다.</p>';
+        }
+
+        // 목표 설정
+        function addGoal() {
+            const title = document.getElementById('goalTitle').value.trim();
+            const description = document.getElementById('goalDescription').value.trim();
+            const type = document.getElementById('goalType').value;
+            const deadline = document.getElementById('goalDeadline').value;
+
+            if (!title) {
+                alert('목표 제목을 입력해주세요.');
+                return;
+            }
+
+            const goals = JSON.parse(localStorage.getItem('gpt_keyboard_goals') || '[]');
+            const newGoal = {
+                id: Date.now().toString(),
+                title,
+                description,
+                type,
+                deadline,
+                createdAt: new Date().toISOString(),
+                completed: false
+            };
+
+            goals.push(newGoal);
+            localStorage.setItem('gpt_keyboard_goals', JSON.stringify(goals));
+
+            document.getElementById('goalTitle').value = '';
+            document.getElementById('goalDescription').value = '';
+            document.getElementById('goalDeadline').value = '';
+
+            loadGoals();
+        }
+
+        function loadGoals() {
+            const goals = JSON.parse(localStorage.getItem('gpt_keyboard_goals') || '[]');
+            const goalsList = document.getElementById('goalsList');
+
+            if (goals.length === 0) {
+                goalsList.innerHTML = '<p style="padding: 20px; text-align: center; color: #999;">설정한 목표가 없습니다.</p>';
+                return;
+            }
+
+            goalsList.innerHTML = goals.map(goal => {
+                const daysLeft = goal.deadline ? Math.ceil((new Date(goal.deadline) - new Date()) / (1000 * 60 * 60 * 24)) : null;
+                return `
+                    <div style="padding: 20px; margin-bottom: 15px; background: ${goal.completed ? '#d4edda' : '#f8f9fa'}; border-radius: 12px; border-left: 4px solid ${goal.completed ? '#28a745' : '#667eea'};">
+                        <div style="display: flex; justify-content: space-between; align-items: start;">
+                            <div style="flex: 1;">
+                                <h4 style="margin-bottom: 10px; ${goal.completed ? 'text-decoration: line-through;' : ''}">${goal.title}</h4>
+                                <p style="color: #666; margin-bottom: 10px;">${goal.description || '설명 없음'}</p>
+                                <div style="font-size: 0.9em; color: #999;">
+                                    <span>유형: ${getGoalTypeName(goal.type)}</span>
+                                    ${goal.deadline ? ` | 마감: ${goal.deadline} ${daysLeft !== null ? (daysLeft > 0 ? `(${daysLeft}일 남음)` : '(기한 지남)') : ''}` : ''}
+                                </div>
+                            </div>
+                            <div>
+                                <button class="btn btn-secondary" onclick="toggleGoal('${goal.id}')" style="margin-left: 10px;">
+                                    ${goal.completed ? '미완료' : '완료'}
+                                </button>
+                                <button class="btn btn-secondary" onclick="deleteGoal('${goal.id}')" style="margin-left: 5px;">삭제</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function getGoalTypeName(type) {
+            const types = {
+                'mental': '정신 건강',
+                'emotional': '감정 관리',
+                'social': '사회성',
+                'selfcare': '자기 돌봄',
+                'growth': '성장',
+                'other': '기타'
+            };
+            return types[type] || type;
+        }
+
+        function toggleGoal(id) {
+            const goals = JSON.parse(localStorage.getItem('gpt_keyboard_goals') || '[]');
+            const goal = goals.find(g => g.id === id);
+            if (goal) {
+                goal.completed = !goal.completed;
+                localStorage.setItem('gpt_keyboard_goals', JSON.stringify(goals));
+                loadGoals();
+            }
+        }
+
+        function deleteGoal(id) {
+            if (confirm('정말 삭제하시겠습니까?')) {
+                const goals = JSON.parse(localStorage.getItem('gpt_keyboard_goals') || '[]');
+                const filtered = goals.filter(g => g.id !== id);
+                localStorage.setItem('gpt_keyboard_goals', JSON.stringify(filtered));
+                loadGoals();
+            }
+        }
+
+        // 스트레스 관리
+        function updateStressLevel(value) {
+            document.getElementById('stressValue').textContent = value;
+            
+            let description = '';
+            let color = '';
+            if (value <= 3) {
+                description = '낮은 스트레스 레벨입니다. 현재 상태를 유지하세요.';
+                color = '#28a745';
+            } else if (value <= 6) {
+                description = '보통 스트레스 레벨입니다. 규칙적인 휴식과 스트레스 관리 방법을 실천해보세요.';
+                color = '#ffc107';
+            } else {
+                description = '높은 스트레스 레벨입니다. 충분한 휴식과 전문가 상담을 고려해보세요.';
+                color = '#dc3545';
+            }
+
+            document.getElementById('stressDescription').innerHTML = `
+                <p style="color: ${color}; font-weight: 600; margin: 0;">${description}</p>
+            `;
+
+            loadStressManagementTips(value);
+        }
+
+        function loadStressManagementTips(level) {
+            const tips = [];
+            if (level <= 3) {
+                tips.push('현재 스트레스 관리가 잘 되고 있습니다.');
+                tips.push('규칙적인 운동과 수면을 유지하세요.');
+                tips.push('긍정적인 활동을 계속하세요.');
+            } else if (level <= 6) {
+                tips.push('깊은 호흡 운동을 실천해보세요.');
+                tips.push('규칙적인 휴식 시간을 가지세요.');
+                tips.push('가벼운 운동이나 산책을 해보세요.');
+                tips.push('마음챙김 명상을 시도해보세요.');
+            } else {
+                tips.push('충분한 휴식을 취하세요.');
+                tips.push('전문가 상담을 고려해보세요.');
+                tips.push('규칙적인 수면 패턴을 유지하세요.');
+                tips.push('스트레스 원인을 파악하고 해결 방법을 찾아보세요.');
+                tips.push('사회적 지지 네트워크를 활용하세요.');
+            }
+
+            document.getElementById('stressManagementTips').innerHTML = tips.map(tip => 
+                `<div style="padding: 10px; margin: 5px 0; background: white; border-radius: 8px;">• ${tip}</div>`
+            ).join('');
+        }
+
+        function saveStressRecord() {
+            const level = document.getElementById('stressLevel').value;
+            const cause = document.getElementById('stressCause').value.trim();
+            
+            if (!cause) {
+                alert('스트레스 원인을 입력해주세요.');
+                return;
+            }
+
+            const records = JSON.parse(localStorage.getItem('gpt_keyboard_stress') || '[]');
+            records.push({
+                level: parseInt(level),
+                cause,
+                date: new Date().toLocaleDateString('ko-KR'),
+                timestamp: new Date().toISOString()
+            });
+
+            localStorage.setItem('gpt_keyboard_stress', JSON.stringify(records));
+            document.getElementById('stressCause').value = '';
+            loadStressHistory();
+        }
+
+        function loadStressHistory() {
+            const records = JSON.parse(localStorage.getItem('gpt_keyboard_stress') || '[]');
+            const historyDiv = document.getElementById('stressHistory');
+
+            if (records.length === 0) {
+                historyDiv.innerHTML = '<p style="color: #999;">기록된 스트레스 이력이 없습니다.</p>';
+                return;
+            }
+
+            const recentRecords = records.slice(-10).reverse();
+            historyDiv.innerHTML = recentRecords.map(r => {
+                let levelColor = '#28a745';
+                if (r.level > 6) levelColor = '#dc3545';
+                else if (r.level > 3) levelColor = '#ffc107';
+
+                return `
+                    <div style="padding: 15px; margin: 10px 0; background: white; border-radius: 8px; border-left: 4px solid ${levelColor};">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                            <span><strong>${r.date}</strong></span>
+                            <span style="color: ${levelColor}; font-weight: 600;">레벨 ${r.level}/10</span>
+                        </div>
+                        <p style="color: #666; margin: 0;">${r.cause}</p>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // 페이지 로드 시 초기화
+        window.addEventListener('DOMContentLoaded', () => {
+            loadDiaries();
+            loadStats();
+            loadDictionary();
+            loadGoals();
+            loadStressHistory();
+            updateStressLevel(5);
+            
+            // 패턴 분석 탭이 활성화될 때 로드
+            const patternTab = document.getElementById('pattern');
+            if (patternTab) {
+                const observer = new MutationObserver(() => {
+                    if (patternTab.classList.contains('active')) {
+                        loadPatternAnalysis();
+                    }
+                });
+                observer.observe(patternTab, { attributes: true, attributeFilter: ['class'] });
+            }
+        });
     </script>
 </body>
 </html>
