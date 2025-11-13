@@ -211,6 +211,156 @@
             font-size: 0.9em;
             margin-top: 5px;
         }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 12px 24px;
+            background: rgba(102, 126, 234, 0.1);
+            border: 2px solid rgba(102, 126, 234, 0.3);
+            border-radius: 12px;
+            color: #667eea;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: 600;
+            transition: all 0.3s;
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .tab-btn:hover {
+            background: rgba(102, 126, 234, 0.2);
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: transparent;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .emotion-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .emotion-btn {
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            background: white;
+            cursor: pointer;
+            text-align: center;
+            font-size: 1.1em;
+            transition: all 0.3s;
+        }
+
+        .emotion-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .emotion-btn.selected {
+            border-color: #667eea;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .psychology-connection {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f0f4ff;
+            border-radius: 12px;
+            border-left: 4px solid #667eea;
+        }
+
+        .psychology-connection h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .connection-item {
+            padding: 10px;
+            margin: 8px 0;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .connection-item strong {
+            color: #667eea;
+        }
+
+        .recommendations {
+            margin-top: 20px;
+            padding: 20px;
+            background: #fff5f5;
+            border-radius: 12px;
+            border-left: 4px solid #ff6b9d;
+        }
+
+        .recommendations h4 {
+            color: #ff6b9d;
+            margin-bottom: 15px;
+        }
+
+        .recommendation-item {
+            padding: 12px;
+            margin: 8px 0;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .recommendation-item:hover {
+            background: #ff6b9d;
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .diary-list {
+            margin-top: 20px;
+        }
+
+        .diary-entry {
+            padding: 15px;
+            margin: 10px 0;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .diary-entry .date {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .diary-entry .emotion-tag {
+            display: inline-block;
+            padding: 4px 8px;
+            background: #667eea;
+            color: white;
+            border-radius: 4px;
+            font-size: 0.8em;
+            margin-right: 5px;
+        }
     </style>
 </head>
 <body>
@@ -235,23 +385,79 @@
                 <div id="apiStatus"></div>
             </div>
 
-            <div class="keyboard-area">
-                <h3>✍️ 텍스트 입력</h3>
+            <div class="tabs">
+                <button class="tab-btn active" onclick="showTab('keyboard')">⌨️ 심리학 키보드</button>
+                <button class="tab-btn" onclick="showTab('diary')">📔 감정 일기</button>
+            </div>
+
+            <!-- 심리학 키보드 탭 -->
+            <div id="keyboard" class="tab-content active">
+                <div class="keyboard-area">
+                    <h3>✍️ 텍스트 입력</h3>
+                    <div class="form-group">
+                        <textarea id="textInput" placeholder="심리학 관련 텍스트를 입력하세요...&#10;&#10;예: 인지 행동 치료, 공감적 대응, 감정 조절 등&#10;입력하면 AI가 심리학 전문가 관점에서 제안을 제공합니다."></textarea>
+                        <div class="char-count">
+                            <span id="charCount">0</span> 글자
+                        </div>
+                    </div>
+
+                    <div class="suggestions" id="suggestions" style="display: none;">
+                        <h4>💡 AI 제안</h4>
+                        <div id="suggestionList"></div>
+                    </div>
+
+                    <div style="margin-top: 20px;">
+                        <button class="btn btn-primary" onclick="getAISuggestion()">🤖 AI 제안 받기</button>
+                        <button class="btn btn-secondary" onclick="clearText()">지우기</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 감정 일기 탭 -->
+            <div id="diary" class="tab-content">
+                <h3>📔 오늘의 감정 일기</h3>
+                
                 <div class="form-group">
-                    <textarea id="textInput" placeholder="심리학 관련 텍스트를 입력하세요...&#10;&#10;예: 인지 행동 치료, 공감적 대응, 감정 조절 등&#10;입력하면 AI가 심리학 전문가 관점에서 제안을 제공합니다."></textarea>
-                    <div class="char-count">
-                        <span id="charCount">0</span> 글자
+                    <label>오늘의 감정을 선택하세요</label>
+                    <div class="emotion-selector" id="emotionSelector">
+                        <div class="emotion-btn" onclick="selectEmotion('기쁨')">😊 기쁨</div>
+                        <div class="emotion-btn" onclick="selectEmotion('슬픔')">😢 슬픔</div>
+                        <div class="emotion-btn" onclick="selectEmotion('화남')">😠 화남</div>
+                        <div class="emotion-btn" onclick="selectEmotion('불안')">😰 불안</div>
+                        <div class="emotion-btn" onclick="selectEmotion('평온')">😌 평온</div>
+                        <div class="emotion-btn" onclick="selectEmotion('피곤')">😴 피곤</div>
+                        <div class="emotion-btn" onclick="selectEmotion('흥미')">🤔 흥미</div>
+                        <div class="emotion-btn" onclick="selectEmotion('사랑')">❤️ 사랑</div>
                     </div>
                 </div>
 
-                <div class="suggestions" id="suggestions" style="display: none;">
-                    <h4>💡 AI 제안</h4>
-                    <div id="suggestionList"></div>
+                <div class="form-group">
+                    <label for="diaryInput">오늘 하루 어떤 일이 있었나요? 기분이나 생각을 자유롭게 적어보세요.</label>
+                    <textarea id="diaryInput" placeholder="오늘의 감정과 생각을 자유롭게 적어보세요...&#10;&#10;예: 오늘 회의에서 스트레스를 많이 받았어요. 계속 불안한 기분이 들고..."></textarea>
+                    <div class="char-count">
+                        <span id="diaryCharCount">0</span> 글자
+                    </div>
                 </div>
 
                 <div style="margin-top: 20px;">
-                    <button class="btn btn-primary" onclick="getAISuggestion()">🤖 AI 제안 받기</button>
-                    <button class="btn btn-secondary" onclick="clearText()">지우기</button>
+                    <button class="btn btn-primary" onclick="saveDiary()">💾 일기 저장</button>
+                    <button class="btn btn-primary" onclick="analyzeEmotion()">🔍 심리학 연결 분석</button>
+                    <button class="btn btn-secondary" onclick="clearDiary()">지우기</button>
+                </div>
+
+                <div class="psychology-connection" id="psychologyConnection" style="display: none;">
+                    <h4>🧠 심리학적 연결</h4>
+                    <div id="connectionList"></div>
+                </div>
+
+                <div class="recommendations" id="recommendations" style="display: none;">
+                    <h4>📚 추천 콘텐츠</h4>
+                    <div id="recommendationList"></div>
+                </div>
+
+                <div class="diary-list" id="diaryList" style="display: none;">
+                    <h3 style="margin-top: 30px; margin-bottom: 15px;">📖 저장된 일기</h3>
+                    <div id="diaryEntries"></div>
                 </div>
             </div>
         </div>
@@ -264,6 +470,11 @@
         const suggestionList = document.getElementById('suggestionList');
         const charCount = document.getElementById('charCount');
         const apiStatus = document.getElementById('apiStatus');
+        
+        // 감정 일기 관련
+        const diaryInput = document.getElementById('diaryInput');
+        const diaryCharCount = document.getElementById('diaryCharCount');
+        let selectedEmotion = null;
 
         // 저장된 API 키 불러오기
         const savedApiKey = localStorage.getItem('gpt_keyboard_api_key');
@@ -292,6 +503,31 @@
             }, 3000);
         }
 
+        // 탭 전환
+        function showTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+            
+            if (tabName === 'diary') {
+                loadDiaries();
+            }
+        }
+
+        // 감정 선택
+        function selectEmotion(emotion) {
+            selectedEmotion = emotion;
+            document.querySelectorAll('.emotion-btn').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            event.target.classList.add('selected');
+        }
+
         // 글자 수 카운트
         textInput.addEventListener('input', (e) => {
             charCount.textContent = e.target.value.length;
@@ -301,6 +537,10 @@
             } else {
                 suggestionsDiv.style.display = 'none';
             }
+        });
+
+        diaryInput.addEventListener('input', (e) => {
+            diaryCharCount.textContent = e.target.value.length;
         });
 
         // 기본 제안 (API 키 없을 때)
@@ -447,6 +687,206 @@
 
         // 초기 글자 수 표시
         charCount.textContent = textInput.value.length;
+        diaryCharCount.textContent = diaryInput.value.length;
+
+        // 감정 일기 저장
+        function saveDiary() {
+            const emotion = selectedEmotion;
+            const content = diaryInput.value.trim();
+            
+            if (!emotion) {
+                showStatus('감정을 선택해주세요.', 'error');
+                return;
+            }
+            
+            if (!content) {
+                showStatus('일기 내용을 입력해주세요.', 'error');
+                return;
+            }
+
+            const diary = {
+                id: Date.now(),
+                date: new Date().toLocaleDateString('ko-KR'),
+                emotion: emotion,
+                content: content,
+                timestamp: new Date().toISOString()
+            };
+
+            const diaries = JSON.parse(localStorage.getItem('gpt_keyboard_diaries') || '[]');
+            diaries.unshift(diary);
+            localStorage.setItem('gpt_keyboard_diaries', JSON.stringify(diaries));
+
+            showStatus('일기가 저장되었습니다.', 'success');
+            clearDiary();
+            loadDiaries();
+        }
+
+        // 심리학 연결 분석
+        async function analyzeEmotion() {
+            const emotion = selectedEmotion;
+            const content = diaryInput.value.trim();
+            
+            if (!emotion || !content) {
+                showStatus('감정과 일기 내용을 입력해주세요.', 'error');
+                return;
+            }
+
+            const connectionDiv = document.getElementById('psychologyConnection');
+            const connectionList = document.getElementById('connectionList');
+            const recommendationsDiv = document.getElementById('recommendations');
+            const recommendationList = document.getElementById('recommendationList');
+
+            connectionDiv.style.display = 'block';
+            connectionList.innerHTML = '<div style="padding: 10px; text-align: center; color: #666;">분석 중...</div>';
+
+            // 감정과 내용 기반 심리학 연결 분석
+            const connections = analyzePsychologyConnection(emotion, content);
+            connectionList.innerHTML = connections.map(conn => 
+                `<div class="connection-item">
+                    <strong>${conn.term}:</strong> ${conn.description}
+                </div>`
+            ).join('');
+
+            // 추천 콘텐츠 생성
+            recommendationsDiv.style.display = 'block';
+            const recommendations = getRecommendations(emotion, content);
+            recommendationList.innerHTML = recommendations.map(rec => 
+                `<div class="recommendation-item" onclick="window.open('${rec.url}', '_blank')">
+                    <strong>${rec.type}:</strong> ${rec.title}
+                </div>`
+            ).join('');
+        }
+
+        // 심리학 연결 분석 함수
+        function analyzePsychologyConnection(emotion, content) {
+            const connections = [];
+            const text = content.toLowerCase();
+
+            // 감정 기반 연결
+            const emotionConnections = {
+                '불안': [
+                    { term: '불안장애', description: '지속적인 불안감은 불안장애와 관련될 수 있습니다. 마음챙김 명상이나 인지 행동 치료가 도움이 될 수 있어요.' },
+                    { term: '스트레스 대처', description: '불안은 스트레스와 밀접한 관련이 있습니다. 깊은 호흡이나 점진적 근육 이완법을 시도해보세요.' }
+                ],
+                '슬픔': [
+                    { term: '우울감', description: '지속적인 슬픔은 우울감과 연결될 수 있습니다. 감정을 인정하고 표현하는 것이 중요해요.' },
+                    { term: '감정 조절', description: '슬픔을 건강하게 다루는 방법을 배우는 것이 중요합니다. 감정 일기나 상담을 고려해보세요.' }
+                ],
+                '화남': [
+                    { term: '분노 관리', description: '화는 자연스러운 감정이지만, 건강하게 표현하는 방법을 배우는 것이 중요해요.' },
+                    { term: '감정 인식', description: '화가 나는 이유를 이해하는 것이 감정 조절의 첫 단계입니다.' }
+                ],
+                '기쁨': [
+                    { term: '긍정 심리학', description: '기쁨을 느끼는 순간을 기록하고 되새기는 것이 행복을 증진시킬 수 있어요.' },
+                    { term: '감사 표현', description: '기쁨을 느낄 때 감사를 표현하면 더 오래 지속될 수 있습니다.' }
+                ]
+            };
+
+            if (emotionConnections[emotion]) {
+                connections.push(...emotionConnections[emotion]);
+            }
+
+            // 내용 기반 연결
+            if (text.includes('스트레스') || text.includes('압박')) {
+                connections.push({ term: '스트레스 관리', description: '스트레스는 정신 건강에 큰 영향을 미칩니다. 규칙적인 운동, 충분한 수면, 휴식이 중요해요.' });
+            }
+            if (text.includes('불안') || text.includes('걱정')) {
+                connections.push({ term: '불안 관리 기법', description: '마음챙김 명상, 호흡 운동, 인지 재구성이 불안 완화에 도움이 됩니다.' });
+            }
+            if (text.includes('관계') || text.includes('사람')) {
+                connections.push({ term: '대인관계 심리학', description: '건강한 관계는 정신 건강의 기초입니다. 경계 설정과 효과적인 소통이 중요해요.' });
+            }
+            if (text.includes('자신') || text.includes('자존감')) {
+                connections.push({ term: '자존감', description: '자존감은 자신을 있는 그대로 받아들이는 것에서 시작됩니다. 자기 자신에게 친절하게 대하세요.' });
+            }
+            if (text.includes('과거') || text.includes('트라우마')) {
+                connections.push({ term: '트라우마 회복', description: '과거의 어려운 경험은 전문가의 도움을 받아 치유할 수 있습니다.' });
+            }
+
+            return connections.slice(0, 4);
+        }
+
+        // 추천 콘텐츠 생성
+        function getRecommendations(emotion, content) {
+            const recommendations = [];
+            const text = content.toLowerCase();
+
+            // 감정 기반 추천
+            const emotionRecommendations = {
+                '불안': [
+                    { type: '팟캐스트', title: '마음챙김 명상으로 불안 다스리기', url: 'https://www.youtube.com/results?search_query=마음챙김+명상+불안' },
+                    { type: '영상', title: '불안장애 이해하기', url: 'https://www.youtube.com/results?search_query=불안장애+이해' }
+                ],
+                '슬픔': [
+                    { type: '팟캐스트', title: '우울감과 슬픔 다루기', url: 'https://www.youtube.com/results?search_query=우울감+슬픔+대처' },
+                    { type: '영상', title: '감정 조절 기법', url: 'https://www.youtube.com/results?search_query=감정+조절+기법' }
+                ],
+                '화남': [
+                    { type: '팟캐스트', title: '분노 관리 방법', url: 'https://www.youtube.com/results?search_query=분노+관리' },
+                    { type: '영상', title: '건강한 감정 표현', url: 'https://www.youtube.com/results?search_query=건강한+감정+표현' }
+                ],
+                '기쁨': [
+                    { type: '팟캐스트', title: '긍정 심리학', url: 'https://www.youtube.com/results?search_query=긍정+심리학' },
+                    { type: '영상', title: '행복 증진 방법', url: 'https://www.youtube.com/results?search_query=행복+증진' }
+                ]
+            };
+
+            if (emotionRecommendations[emotion]) {
+                recommendations.push(...emotionRecommendations[emotion]);
+            }
+
+            // 내용 기반 추천
+            if (text.includes('스트레스')) {
+                recommendations.push({ type: '팟캐스트', title: '스트레스 관리 팟캐스트', url: 'https://www.youtube.com/results?search_query=스트레스+관리+팟캐스트' });
+            }
+            if (text.includes('관계') || text.includes('사람')) {
+                recommendations.push({ type: '영상', title: '건강한 대인관계', url: 'https://www.youtube.com/results?search_query=건강한+대인관계' });
+            }
+            if (text.includes('자존감')) {
+                recommendations.push({ type: '팟캐스트', title: '자존감 회복하기', url: 'https://www.youtube.com/results?search_query=자존감+회복' });
+            }
+
+            // 기본 추천
+            if (recommendations.length === 0) {
+                recommendations.push(
+                    { type: '팟캐스트', title: '심리학 팟캐스트 모음', url: 'https://www.youtube.com/results?search_query=심리학+팟캐스트' },
+                    { type: '영상', title: '심리학 강의', url: 'https://www.youtube.com/results?search_query=심리학+강의' }
+                );
+            }
+
+            return recommendations.slice(0, 4);
+        }
+
+        // 일기 지우기
+        function clearDiary() {
+            diaryInput.value = '';
+            diaryCharCount.textContent = '0';
+            selectedEmotion = null;
+            document.querySelectorAll('.emotion-btn').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+        }
+
+        // 저장된 일기 불러오기
+        function loadDiaries() {
+            const diaries = JSON.parse(localStorage.getItem('gpt_keyboard_diaries') || '[]');
+            const diaryList = document.getElementById('diaryList');
+            const diaryEntries = document.getElementById('diaryEntries');
+
+            if (diaries.length === 0) {
+                diaryList.style.display = 'none';
+                return;
+            }
+
+            diaryList.style.display = 'block';
+            diaryEntries.innerHTML = diaries.map(diary => 
+                `<div class="diary-entry">
+                    <div class="date">${diary.date}</div>
+                    <span class="emotion-tag">${diary.emotion}</span>
+                    <div style="margin-top: 10px;">${diary.content}</div>
+                </div>`
+            ).join('');
+        }
     </script>
 </body>
 </html>
