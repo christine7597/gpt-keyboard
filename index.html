@@ -495,29 +495,32 @@
             }
         }
 
-        // 기본 제안 생성 (심리학 특화)
+        // 기본 제안 생성 (심리학 특화 - 전문가 수준)
         function generateBasicSuggestions(text) {
             const suggestions = [];
-            const lastWord = text.trim().split(/\s+/).pop().toLowerCase();
+            const words = text.trim().toLowerCase().split(/\s+/);
+            const lastWord = words[words.length - 1];
+            const textLower = text.toLowerCase();
             
             // 심리학 관련 용어 완성
             const psychologyTerms = {
-                '인지': ['인지 행동 치료', '인지 행동 치료(CBT)', '인지 왜곡'],
-                '공감': ['공감적 대응', '공감하기', '공감 능력'],
-                '감정': ['감정 조절', '감정 인식', '감정 표현'],
-                '스트레스': ['스트레스 관리', '스트레스 완화', '스트레스 대처'],
-                '마음챙김': ['마음챙김 명상', '마음챙김 연습', '마음챙김 기법'],
-                '자존감': ['자존감 향상', '자존감 키우기', '자존감 회복'],
-                '불안': ['불안 관리', '불안 완화', '불안 대처'],
-                '우울': ['우울증', '우울감', '우울 증상'],
-                '상담': ['상담 과정', '상담 기법', '상담 접근'],
-                '치료': ['치료 효과', '치료 과정', '치료 기법'],
-                '트라우마': ['트라우마 치료', '트라우마 회복', '트라우마 대처'],
-                '애착': ['애착 이론', '애착 유형', '애착 관계'],
-                '자기효능감': ['자기효능감 향상', '자기효능감', '자기효능감 증진'],
-                '회복탄력성': ['회복탄력성', '회복탄력성 향상', '회복탄력성 기르기']
+                '인지': ['인지 행동 치료', '인지 행동 치료(CBT)', '인지 왜곡', '인지 재구성'],
+                '공감': ['공감적 대응', '공감하기', '공감 능력', '공감 표현'],
+                '감정': ['감정 조절', '감정 인식', '감정 표현', '감정 규제'],
+                '스트레스': ['스트레스 관리', '스트레스 완화', '스트레스 대처', '스트레스 반응'],
+                '마음챙김': ['마음챙김 명상', '마음챙김 연습', '마음챙김 기법', '마음챙김 훈련'],
+                '자존감': ['자존감 향상', '자존감 키우기', '자존감 회복', '자존감 형성'],
+                '불안': ['불안 관리', '불안 완화', '불안 대처', '불안장애'],
+                '우울': ['우울증', '우울감', '우울 증상', '우울 치료'],
+                '상담': ['상담 과정', '상담 기법', '상담 접근', '상담 효과'],
+                '치료': ['치료 효과', '치료 과정', '치료 기법', '치료 계획'],
+                '트라우마': ['트라우마 치료', '트라우마 회복', '트라우마 대처', '트라우마 치유'],
+                '애착': ['애착 이론', '애착 유형', '애착 관계', '애착 패턴'],
+                '자기효능감': ['자기효능감 향상', '자기효능감', '자기효능감 증진', '자기효능감 발달'],
+                '회복탄력성': ['회복탄력성', '회복탄력성 향상', '회복탄력성 기르기', '회복탄력성 발달']
             };
 
+            // 단어 완성
             for (const [key, values] of Object.entries(psychologyTerms)) {
                 if (lastWord.startsWith(key) || key.startsWith(lastWord)) {
                     values.forEach(val => {
@@ -528,12 +531,46 @@
                 }
             }
 
+            // 맥락 기반 제안 (문장 패턴 인식)
+            if (textLower.includes('불안') || textLower.includes('걱정')) {
+                suggestions.push('불안 완화 기법', '마음챙김 명상', '호흡 운동');
+            }
+            if (textLower.includes('스트레스') || textLower.includes('압박')) {
+                suggestions.push('스트레스 관리 전략', '이완 기법', '시간 관리');
+            }
+            if (textLower.includes('관계') || textLower.includes('사람')) {
+                suggestions.push('대인관계 기술', '경계 설정', '효과적 소통');
+            }
+            if (textLower.includes('자신') || textLower.includes('자존감')) {
+                suggestions.push('자존감 향상 방법', '자기 수용', '긍정적 자기 대화');
+            }
+            if (textLower.includes('감정') && textLower.includes('조절')) {
+                suggestions.push('감정 인식 훈련', '감정 표현 기법', '감정 규제 전략');
+            }
+            if (textLower.includes('치료') || textLower.includes('상담')) {
+                suggestions.push('치료 효과 평가', '상담 목표 설정', '치료 동맹');
+            }
+            if (textLower.includes('트라우마') || textLower.includes('과거')) {
+                suggestions.push('트라우마 치료 접근', '안전한 공간 만들기', '회복 과정');
+            }
+
+            // 문장 완성 패턴
+            if (text.endsWith('은') || text.endsWith('는') || text.endsWith('이') || text.endsWith('가')) {
+                suggestions.push('중요한 개념입니다', '핵심 요소입니다', '주요 요인입니다');
+            }
+            if (text.endsWith('때') || text.endsWith('경우')) {
+                suggestions.push('대처 방법을 찾아야 합니다', '전문가의 도움을 받는 것이 좋습니다', '자기 돌봄이 필요합니다');
+            }
+            if (text.endsWith('수') || text.endsWith('할')) {
+                suggestions.push('있습니다', '가능합니다', '도움이 됩니다');
+            }
+
             // 문장 완성 제안
-            if (text.endsWith(' ')) {
+            if (text.endsWith(' ') && suggestions.length === 0) {
                 suggestions.push('계속 입력하세요...');
             }
 
-            return suggestions.slice(0, 3);
+            return suggestions.slice(0, 5);
         }
 
         // AI 제안 받기
