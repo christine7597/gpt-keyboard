@@ -348,6 +348,196 @@
             font-size: 0.8em;
             margin-right: 5px;
         }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .stat-card h4 {
+            margin-bottom: 10px;
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        .stat-card .value {
+            font-size: 2em;
+            font-weight: bold;
+        }
+
+        .chart-container {
+            margin: 20px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 12px;
+        }
+
+        .emotion-bar {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+        }
+
+        .emotion-bar-label {
+            width: 80px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .emotion-bar-fill {
+            flex: 1;
+            height: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 10px;
+            color: white;
+            font-weight: 600;
+            min-width: 50px;
+        }
+
+        .dictionary-item {
+            padding: 15px;
+            margin: 10px 0;
+            background: white;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .dictionary-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .dictionary-item h4 {
+            color: #667eea;
+            margin-bottom: 8px;
+        }
+
+        .dictionary-item p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .mindfulness-exercise {
+            padding: 20px;
+            margin: 15px 0;
+            background: linear-gradient(135deg, #f0f4ff 0%, #e8f0fe 100%);
+            border-radius: 12px;
+            border-left: 4px solid #667eea;
+        }
+
+        .mindfulness-exercise h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .breathing-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 20px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5em;
+            font-weight: bold;
+            transition: transform 0.5s ease;
+        }
+
+        .breathing-circle.breathing-in {
+            transform: scale(1.2);
+        }
+
+        .breathing-circle.breathing-out {
+            transform: scale(0.9);
+        }
+
+        .tip-card {
+            padding: 20px;
+            margin: 15px 0;
+            background: linear-gradient(135deg, #fff5f5 0%, #ffe8e8 100%);
+            border-radius: 12px;
+            border-left: 4px solid #ff6b9d;
+        }
+
+        .tip-card h4 {
+            color: #ff6b9d;
+            margin-bottom: 10px;
+        }
+
+        .tip-card p {
+            color: #666;
+            line-height: 1.8;
+        }
+
+        .coping-guide {
+            padding: 15px;
+            margin: 10px 0;
+            background: white;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .coping-guide h4 {
+            color: #667eea;
+            margin-bottom: 8px;
+        }
+
+        .coping-guide ul {
+            margin-left: 20px;
+            color: #666;
+            line-height: 1.8;
+        }
+
+        .search-box {
+            margin-bottom: 20px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1em;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+            margin-top: 15px;
+        }
+
+        .calendar-day {
+            padding: 10px;
+            text-align: center;
+            border-radius: 8px;
+            background: #f8f9fa;
+            font-size: 0.9em;
+        }
+
+        .calendar-day.has-entry {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -361,6 +551,10 @@
             <div class="tabs">
                 <button class="tab-btn active" onclick="showTab('keyboard')">⌨️ 심리학 키보드</button>
                 <button class="tab-btn" onclick="showTab('diary')">📔 감정 일기</button>
+                <button class="tab-btn" onclick="showTab('stats')">📊 감정 통계</button>
+                <button class="tab-btn" onclick="showTab('dictionary')">📚 심리학 사전</button>
+                <button class="tab-btn" onclick="showTab('mindfulness')">🧘 마음챙김</button>
+                <button class="tab-btn" onclick="showTab('tips')">💡 심리학 팁</button>
             </div>
 
             <!-- 심리학 키보드 탭 -->
@@ -430,7 +624,167 @@
 
                 <div class="diary-list" id="diaryList" style="display: none;">
                     <h3 style="margin-top: 30px; margin-bottom: 15px;">📖 저장된 일기</h3>
+                    <div class="search-box">
+                        <input type="text" id="diarySearch" placeholder="일기 검색..." onkeyup="searchDiaries()">
+                    </div>
                     <div id="diaryEntries"></div>
+                </div>
+            </div>
+
+            <!-- 감정 통계 탭 -->
+            <div id="stats" class="tab-content">
+                <h3>📊 감정 통계</h3>
+                <div class="stats-grid" id="statsGrid">
+                    <div class="stat-card">
+                        <h4>총 일기 수</h4>
+                        <div class="value" id="totalDiaries">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h4>가장 많은 감정</h4>
+                        <div class="value" id="mostEmotion">-</div>
+                    </div>
+                    <div class="stat-card">
+                        <h4>이번 주 일기</h4>
+                        <div class="value" id="weekDiaries">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h4>이번 달 일기</h4>
+                        <div class="value" id="monthDiaries">0</div>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <h4 style="margin-bottom: 15px;">감정별 분포</h4>
+                    <div id="emotionChart"></div>
+                </div>
+
+                <div class="chart-container">
+                    <h4 style="margin-bottom: 15px;">최근 30일 감정 추이</h4>
+                    <div id="emotionTrend"></div>
+                </div>
+            </div>
+
+            <!-- 심리학 사전 탭 -->
+            <div id="dictionary" class="tab-content">
+                <h3>📚 심리학 용어 사전</h3>
+                <div class="search-box">
+                    <input type="text" id="dictSearch" placeholder="심리학 용어 검색..." onkeyup="searchDictionary()">
+                </div>
+                <div id="dictionaryList"></div>
+            </div>
+
+            <!-- 마음챙김 탭 -->
+            <div id="mindfulness" class="tab-content">
+                <h3>🧘 마음챙김 가이드</h3>
+                
+                <div class="mindfulness-exercise">
+                    <h4>🌬️ 호흡 운동</h4>
+                    <p style="margin-bottom: 15px; color: #666;">천천히 호흡하며 마음을 진정시키세요. 아래 원을 따라 호흡하세요.</p>
+                    <div class="breathing-circle" id="breathingCircle">
+                        <div id="breathingText">시작하기</div>
+                    </div>
+                    <div style="text-align: center; margin-top: 15px;">
+                        <button class="btn btn-primary" onclick="startBreathing()" id="breathingBtn">호흡 시작</button>
+                        <button class="btn btn-secondary" onclick="stopBreathing()" id="stopBreathingBtn" style="display: none;">멈추기</button>
+                    </div>
+                </div>
+
+                <div class="mindfulness-exercise">
+                    <h4>💭 마음챙김 명상 가이드</h4>
+                    <p style="color: #666; line-height: 1.8; margin-bottom: 15px;">
+                        <strong>5분 마음챙김 명상:</strong><br>
+                        1. 편안한 자세로 앉거나 누우세요<br>
+                        2. 눈을 감고 자연스럽게 호흡하세요<br>
+                        3. 호흡에 집중하며 생각이 떠오르면 다시 호흡으로 돌아오세요<br>
+                        4. 몸의 감각을 느껴보세요<br>
+                        5. 마지막으로 감사한 일을 떠올려보세요
+                    </p>
+                </div>
+
+                <div class="mindfulness-exercise">
+                    <h4>🌙 수면 가이드</h4>
+                    <p style="color: #666; line-height: 1.8;">
+                        <strong>잠들기 전 마음챙김:</strong><br>
+                        • 오늘 하루를 되돌아보며 감사한 일을 떠올려보세요<br>
+                        • 긴장된 근육을 하나씩 이완시켜보세요<br>
+                        • 편안한 호흡에 집중하며 잠에 빠져드세요
+                    </p>
+                </div>
+            </div>
+
+            <!-- 심리학 팁 탭 -->
+            <div id="tips" class="tab-content">
+                <h3>💡 심리학 팁 & 가이드</h3>
+                
+                <div class="tip-card">
+                    <h4>😊 기쁨을 느낄 때</h4>
+                    <p>
+                        기쁨을 느낄 때는 그 순간을 충분히 즐기고, 감사 일기에 기록해보세요. 
+                        긍정적인 경험을 되새기는 것은 행복을 증진시킵니다. 
+                        주변 사람들과 기쁨을 나누면 더 오래 지속될 수 있어요.
+                    </p>
+                </div>
+
+                <div class="tip-card">
+                    <h4>😢 슬픔을 느낄 때</h4>
+                    <p>
+                        슬픔은 자연스러운 감정입니다. 감정을 억누르지 말고 인정하세요. 
+                        충분히 슬퍼할 시간을 주고, 신뢰할 수 있는 사람과 대화해보세요. 
+                        규칙적인 생활 패턴을 유지하는 것도 도움이 됩니다.
+                    </p>
+                </div>
+
+                <div class="tip-card">
+                    <h4>😠 화가 날 때</h4>
+                    <p>
+                        화가 나면 먼저 깊게 숨을 쉬어보세요. 10초 정도 멈춰서 생각해보고, 
+                        감정의 원인을 파악해보세요. 건강한 방법으로 감정을 표현하거나, 
+                        운동이나 창의적 활동으로 에너지를 발산해보세요.
+                    </p>
+                </div>
+
+                <div class="tip-card">
+                    <h4>😰 불안할 때</h4>
+                    <p>
+                        불안할 때는 현재 순간에 집중하세요. 5-4-3-2-1 기법을 시도해보세요: 
+                        보이는 것 5개, 들리는 것 4개, 만질 수 있는 것 3개, 냄새나는 것 2개, 
+                        맛볼 수 있는 것 1개를 찾아보세요. 마음챙김 호흡도 도움이 됩니다.
+                    </p>
+                </div>
+
+                <div class="tip-card">
+                    <h4>😴 피곤할 때</h4>
+                    <p>
+                        피곤할 때는 충분한 휴식이 필요합니다. 규칙적인 수면 패턴을 유지하고, 
+                        낮잠은 20-30분으로 제한하세요. 스트레칭이나 가벼운 산책으로 
+                        몸의 긴장을 풀어보세요. 수면 위생을 개선하는 것도 중요합니다.
+                    </p>
+                </div>
+
+                <div class="coping-guide">
+                    <h4>🧠 스트레스 대처 방법</h4>
+                    <ul>
+                        <li>규칙적인 운동 (주 3회 이상)</li>
+                        <li>충분한 수면 (7-9시간)</li>
+                        <li>건강한 식습관 유지</li>
+                        <li>사회적 지지 네트워크 활용</li>
+                        <li>취미 활동으로 스트레스 해소</li>
+                        <li>시간 관리와 우선순위 설정</li>
+                        <li>전문가 상담 고려</li>
+                    </ul>
+                </div>
+
+                <div class="coping-guide">
+                    <h4>💪 자존감 향상 방법</h4>
+                    <ul>
+                        <li>자기 자신에게 친절하게 대하기</li>
+                        <li>긍정적인 자기 대화 실천</li>
+                        <li>작은 목표를 세우고 달성하기</li>
+                        <li>자신의 강점 인식하기</li>
+                        <li>비교하지 않고 자신의 속도로 나아가기</li>
+                        <li>실수를 배움의 기회로 보기</li>
+                        <li>자기 돌봄 실천하기</li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -460,6 +814,10 @@
             
             if (tabName === 'diary') {
                 loadDiaries();
+            } else if (tabName === 'stats') {
+                loadStats();
+            } else if (tabName === 'dictionary') {
+                loadDictionary();
             }
         }
 
@@ -880,7 +1238,7 @@
         }
 
         // 저장된 일기 불러오기
-        function loadDiaries() {
+        function loadDiaries(searchTerm = '') {
             const diaries = JSON.parse(localStorage.getItem('gpt_keyboard_diaries') || '[]');
             const diaryList = document.getElementById('diaryList');
             const diaryEntries = document.getElementById('diaryEntries');
@@ -891,13 +1249,261 @@
             }
 
             diaryList.style.display = 'block';
-            diaryEntries.innerHTML = diaries.map(diary => 
+            
+            let filteredDiaries = diaries;
+            if (searchTerm) {
+                const term = searchTerm.toLowerCase();
+                filteredDiaries = diaries.filter(diary => 
+                    diary.content.toLowerCase().includes(term) || 
+                    diary.emotion.toLowerCase().includes(term) ||
+                    diary.date.includes(term)
+                );
+            }
+
+            if (filteredDiaries.length === 0) {
+                diaryEntries.innerHTML = '<div style="padding: 20px; text-align: center; color: #999;">검색 결과가 없습니다.</div>';
+                return;
+            }
+
+            diaryEntries.innerHTML = filteredDiaries.map(diary => 
                 `<div class="diary-entry">
                     <div class="date">${diary.date}</div>
                     <span class="emotion-tag">${diary.emotion}</span>
                     <div style="margin-top: 10px;">${diary.content}</div>
                 </div>`
             ).join('');
+        }
+
+        // 일기 검색
+        function searchDiaries() {
+            const searchTerm = document.getElementById('diarySearch').value;
+            loadDiaries(searchTerm);
+        }
+
+        // 감정 통계 로드
+        function loadStats() {
+            const diaries = JSON.parse(localStorage.getItem('gpt_keyboard_diaries') || '[]');
+            
+            // 총 일기 수
+            document.getElementById('totalDiaries').textContent = diaries.length;
+
+            // 감정별 카운트
+            const emotionCount = {};
+            diaries.forEach(diary => {
+                emotionCount[diary.emotion] = (emotionCount[diary.emotion] || 0) + 1;
+            });
+
+            // 가장 많은 감정
+            let mostEmotion = '-';
+            let maxCount = 0;
+            for (const [emotion, count] of Object.entries(emotionCount)) {
+                if (count > maxCount) {
+                    maxCount = count;
+                    mostEmotion = emotion;
+                }
+            }
+            document.getElementById('mostEmotion').textContent = mostEmotion;
+
+            // 이번 주 일기
+            const weekAgo = new Date();
+            weekAgo.setDate(weekAgo.getDate() - 7);
+            const weekDiaries = diaries.filter(diary => new Date(diary.timestamp) >= weekAgo);
+            document.getElementById('weekDiaries').textContent = weekDiaries.length;
+
+            // 이번 달 일기
+            const monthAgo = new Date();
+            monthAgo.setMonth(monthAgo.getMonth() - 1);
+            const monthDiaries = diaries.filter(diary => new Date(diary.timestamp) >= monthAgo);
+            document.getElementById('monthDiaries').textContent = monthDiaries.length;
+
+            // 감정별 분포 차트
+            const chartDiv = document.getElementById('emotionChart');
+            const total = diaries.length;
+            chartDiv.innerHTML = Object.entries(emotionCount)
+                .sort((a, b) => b[1] - a[1])
+                .map(([emotion, count]) => {
+                    const percent = total > 0 ? Math.round((count / total) * 100) : 0;
+                    return `
+                        <div class="emotion-bar">
+                            <div class="emotion-bar-label">${emotion}</div>
+                            <div class="emotion-bar-fill" style="width: ${percent}%;">
+                                ${count}개 (${percent}%)
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+            // 최근 30일 감정 추이
+            const trendDiv = document.getElementById('emotionTrend');
+            const thirtyDaysAgo = new Date();
+            thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+            const recentDiaries = diaries.filter(diary => new Date(diary.timestamp) >= thirtyDaysAgo);
+            
+            const dailyEmotions = {};
+            recentDiaries.forEach(diary => {
+                const date = diary.date;
+                if (!dailyEmotions[date]) {
+                    dailyEmotions[date] = [];
+                }
+                dailyEmotions[date].push(diary.emotion);
+            });
+
+            trendDiv.innerHTML = Object.entries(dailyEmotions)
+                .slice(-7) // 최근 7일만 표시
+                .map(([date, emotions]) => {
+                    const emotionCounts = {};
+                    emotions.forEach(e => emotionCounts[e] = (emotionCounts[e] || 0) + 1);
+                    const mainEmotion = Object.entries(emotionCounts).sort((a, b) => b[1] - a[1])[0]?.[0] || '-';
+                    return `
+                        <div style="padding: 10px; margin: 5px 0; background: white; border-radius: 8px; display: flex; justify-content: space-between;">
+                            <span>${date}</span>
+                            <span style="font-weight: 600; color: #667eea;">${mainEmotion}</span>
+                        </div>
+                    `;
+                }).join('') || '<div style="padding: 20px; text-align: center; color: #999;">최근 30일간 일기 데이터가 없습니다.</div>';
+        }
+
+        // 심리학 사전 로드
+        const psychologyDictionary = {
+            '인지 행동 치료': {
+                term: '인지 행동 치료 (CBT)',
+                description: '사람의 생각(인지), 감정, 행동이 서로 연결되어 있다는 원리에 기반한 치료법. 부정적인 사고 패턴을 인식하고 변화시켜 정서적 문제를 해결합니다.'
+            },
+            '마음챙김': {
+                term: '마음챙김 (Mindfulness)',
+                description: '현재 순간에 의도적으로 주의를 기울이고, 판단하지 않고 관찰하는 상태. 스트레스 감소와 정신 건강 향상에 도움이 됩니다.'
+            },
+            '트라우마': {
+                term: '트라우마 (Trauma)',
+                description: '심각한 정신적 충격을 주는 사건이나 경험. PTSD(외상후 스트레스 장애)와 관련이 있으며, 전문적인 치료가 필요할 수 있습니다.'
+            },
+            '자존감': {
+                term: '자존감 (Self-esteem)',
+                description: '자신에 대한 전반적인 평가와 가치 인식. 건강한 자존감은 정신 건강의 기초가 됩니다.'
+            },
+            '공감': {
+                term: '공감 (Empathy)',
+                description: '다른 사람의 감정과 경험을 이해하고 공감하는 능력. 건강한 대인관계 형성에 중요한 요소입니다.'
+            },
+            '불안장애': {
+                term: '불안장애 (Anxiety Disorder)',
+                description: '과도하고 지속적인 불안과 걱정이 일상생활에 지장을 주는 정신 건강 상태. 치료 가능한 질환입니다.'
+            },
+            '우울증': {
+                term: '우울증 (Depression)',
+                description: '지속적인 슬픔, 흥미 상실, 에너지 부족 등의 증상이 나타나는 정신 건강 상태. 전문가의 도움이 필요합니다.'
+            },
+            '회복탄력성': {
+                term: '회복탄력성 (Resilience)',
+                description: '어려움과 역경을 견디고 회복하는 능력. 스트레스나 트라우마 이후에도 적응하고 성장할 수 있는 힘입니다.'
+            },
+            '자기효능감': {
+                term: '자기효능감 (Self-efficacy)',
+                description: '특정 상황에서 자신이 성공적으로 행동할 수 있다는 믿음. 목표 달성과 동기 부여에 중요한 역할을 합니다.'
+            },
+            '애착': {
+                term: '애착 (Attachment)',
+                description: '특정 사람과 형성하는 강한 정서적 유대. 유아기 애착 패턴은 성인기 대인관계에 영향을 미칩니다.'
+            },
+            '인지 왜곡': {
+                term: '인지 왜곡 (Cognitive Distortion)',
+                description: '비현실적이거나 부정적인 사고 패턴. 예: 흑백사고, 과도한 일반화, 감정적 추론 등.'
+            },
+            '감정 조절': {
+                term: '감정 조절 (Emotion Regulation)',
+                description: '감정을 인식하고 적절하게 관리하는 능력. 건강한 감정 조절은 정신 건강의 핵심입니다.'
+            },
+            '스트레스': {
+                term: '스트레스 (Stress)',
+                description: '압박감이나 부담을 느끼는 상태. 적절한 스트레스는 동기 부여가 되지만, 과도한 스트레스는 건강에 해롭습니다.'
+            },
+            '상담': {
+                term: '상담 (Counseling)',
+                description: '전문가와의 대화를 통해 정서적 문제를 해결하고 성장하는 과정. 비밀보장이 보장되는 안전한 공간입니다.'
+            },
+            '치료 동맹': {
+                term: '치료 동맹 (Therapeutic Alliance)',
+                description: '치료자와 내담자 간의 신뢰와 협력 관계. 치료 효과에 가장 중요한 요소 중 하나입니다.'
+            }
+        };
+
+        function loadDictionary(searchTerm = '') {
+            const dictList = document.getElementById('dictionaryList');
+            let items = Object.values(psychologyDictionary);
+            
+            if (searchTerm) {
+                const term = searchTerm.toLowerCase();
+                items = items.filter(item => 
+                    item.term.toLowerCase().includes(term) || 
+                    item.description.toLowerCase().includes(term)
+                );
+            }
+
+            if (items.length === 0) {
+                dictList.innerHTML = '<div style="padding: 20px; text-align: center; color: #999;">검색 결과가 없습니다.</div>';
+                return;
+            }
+
+            dictList.innerHTML = items.map(item => 
+                `<div class="dictionary-item">
+                    <h4>${item.term}</h4>
+                    <p>${item.description}</p>
+                </div>`
+            ).join('');
+        }
+
+        function searchDictionary() {
+            const searchTerm = document.getElementById('dictSearch').value;
+            loadDictionary(searchTerm);
+        }
+
+        // 호흡 운동
+        let breathingInterval = null;
+        let breathingPhase = 'in'; // 'in' or 'out'
+        let breathingCount = 0;
+
+        function startBreathing() {
+            const circle = document.getElementById('breathingCircle');
+            const text = document.getElementById('breathingText');
+            const startBtn = document.getElementById('breathingBtn');
+            const stopBtn = document.getElementById('stopBreathingBtn');
+            
+            startBtn.style.display = 'none';
+            stopBtn.style.display = 'inline-block';
+            breathingCount = 0;
+            breathingPhase = 'in';
+
+            breathingInterval = setInterval(() => {
+                if (breathingPhase === 'in') {
+                    circle.classList.add('breathing-in');
+                    circle.classList.remove('breathing-out');
+                    text.textContent = '들어쉬기';
+                    breathingPhase = 'out';
+                } else {
+                    circle.classList.remove('breathing-in');
+                    circle.classList.add('breathing-out');
+                    text.textContent = '내쉬기';
+                    breathingPhase = 'in';
+                    breathingCount++;
+                }
+            }, 4000); // 4초마다 전환
+        }
+
+        function stopBreathing() {
+            if (breathingInterval) {
+                clearInterval(breathingInterval);
+                breathingInterval = null;
+            }
+            
+            const circle = document.getElementById('breathingCircle');
+            const text = document.getElementById('breathingText');
+            const startBtn = document.getElementById('breathingBtn');
+            const stopBtn = document.getElementById('stopBreathingBtn');
+            
+            circle.classList.remove('breathing-in', 'breathing-out');
+            text.textContent = `완료 (${breathingCount}회)`;
+            startBtn.style.display = 'inline-block';
+            stopBtn.style.display = 'none';
         }
     </script>
 </body>
