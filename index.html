@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GPT Keyboard - AI Keyboard</title>
+    <title>GPT Keyboard - 심리학 특화 AI 키보드</title>
     <style>
         * {
             margin: 0;
@@ -217,7 +217,7 @@
     <div class="container">
         <div class="header">
             <h1>⌨️ GPT Keyboard</h1>
-            <p>AI 기반 스마트 키보드 - 더 똑똑한 텍스트 입력</p>
+            <p>심리학 특화 AI 키보드 - 심리학 전문가를 위한 스마트 텍스트 입력</p>
         </div>
 
         <div class="main-card">
@@ -238,7 +238,7 @@
             <div class="keyboard-area">
                 <h3>✍️ 텍스트 입력</h3>
                 <div class="form-group">
-                    <textarea id="textInput" placeholder="여기에 텍스트를 입력하세요...&#10;&#10;입력하면 AI가 자동으로 제안을 제공합니다."></textarea>
+                    <textarea id="textInput" placeholder="심리학 관련 텍스트를 입력하세요...&#10;&#10;예: 인지 행동 치료, 공감적 대응, 감정 조절 등&#10;입력하면 AI가 심리학 전문가 관점에서 제안을 제공합니다."></textarea>
                     <div class="char-count">
                         <span id="charCount">0</span> 글자
                     </div>
@@ -311,21 +311,30 @@
             }
         }
 
-        // 기본 제안 생성 (간단한 패턴 매칭)
+        // 기본 제안 생성 (심리학 특화)
         function generateBasicSuggestions(text) {
             const suggestions = [];
             const lastWord = text.trim().split(/\s+/).pop().toLowerCase();
             
-            // 일반적인 단어 완성
-            const commonWords = {
-                '안녕': ['안녕하세요', '안녕하세요!', '안녕하세요. 오늘 하루 어떠셨나요?'],
-                '감사': ['감사합니다', '감사합니다!', '감사합니다. 도움이 되어 기쁩니다.'],
-                '죄송': ['죄송합니다', '죄송합니다.', '죄송합니다. 다음에는 더 주의하겠습니다.'],
-                '좋은': ['좋은 하루', '좋은 하루 되세요', '좋은 하루 보내세요!'],
-                '도움': ['도움이 필요합니다', '도움을 요청합니다', '도움이 되었나요?']
+            // 심리학 관련 용어 완성
+            const psychologyTerms = {
+                '인지': ['인지 행동 치료', '인지 행동 치료(CBT)', '인지 왜곡'],
+                '공감': ['공감적 대응', '공감하기', '공감 능력'],
+                '감정': ['감정 조절', '감정 인식', '감정 표현'],
+                '스트레스': ['스트레스 관리', '스트레스 완화', '스트레스 대처'],
+                '마음챙김': ['마음챙김 명상', '마음챙김 연습', '마음챙김 기법'],
+                '자존감': ['자존감 향상', '자존감 키우기', '자존감 회복'],
+                '불안': ['불안 관리', '불안 완화', '불안 대처'],
+                '우울': ['우울증', '우울감', '우울 증상'],
+                '상담': ['상담 과정', '상담 기법', '상담 접근'],
+                '치료': ['치료 효과', '치료 과정', '치료 기법'],
+                '트라우마': ['트라우마 치료', '트라우마 회복', '트라우마 대처'],
+                '애착': ['애착 이론', '애착 유형', '애착 관계'],
+                '자기효능감': ['자기효능감 향상', '자기효능감', '자기효능감 증진'],
+                '회복탄력성': ['회복탄력성', '회복탄력성 향상', '회복탄력성 기르기']
             };
 
-            for (const [key, values] of Object.entries(commonWords)) {
+            for (const [key, values] of Object.entries(psychologyTerms)) {
                 if (lastWord.startsWith(key) || key.startsWith(lastWord)) {
                     values.forEach(val => {
                         if (!suggestions.includes(val)) {
@@ -356,7 +365,7 @@
             if (!apiKey) {
                 // API 키가 없으면 기본 제안만 표시
                 showBasicSuggestions(text);
-                showStatus('API 키를 입력하면 더 똑똑한 제안을 받을 수 있습니다.', 'info');
+                showStatus('API 키를 입력하면 심리학 전문가 수준의 제안을 받을 수 있습니다.', 'info');
                 return;
             }
 
@@ -376,11 +385,11 @@
                         messages: [
                             {
                                 role: 'system',
-                                content: '사용자가 입력한 텍스트를 바탕으로 자연스러운 다음 문장이나 단어를 3개 제안해주세요. 각 제안은 짧고 간결하게 작성해주세요.'
+                                content: '당신은 심리학 전문가입니다. 사용자가 입력한 심리학 관련 텍스트를 바탕으로 전문적이고 자연스러운 다음 문장이나 용어를 3개 제안해주세요. 각 제안은 심리학 전문가 관점에서 정확하고 간결하게 작성해주세요.'
                             },
                             {
                                 role: 'user',
-                                content: `다음 텍스트에 이어질 수 있는 자연스러운 제안을 3개 해주세요: "${text}"`
+                                content: `다음 심리학 관련 텍스트에 이어질 수 있는 전문적인 제안을 3개 해주세요: "${text}"`
                             }
                         ],
                         max_tokens: 100,
