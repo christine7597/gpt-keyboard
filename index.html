@@ -578,9 +578,23 @@
                         <div id="suggestionList"></div>
                     </div>
 
-                    <div style="margin-top: 20px;">
+                    <div style="margin-top: 20px; display: flex; gap: 10px; flex-wrap: wrap;">
                         <button class="btn btn-primary" onclick="getAISuggestion()">🤖 AI 제안 받기</button>
-                        <button class="btn btn-secondary" onclick="clearText()">지우기</button>
+                        <button class="btn" onclick="copyText()" style="background: #17a2b8; color: white;">📋 복사</button>
+                        <button class="btn" onclick="saveText()" style="background: #28a745; color: white;">💾 저장</button>
+                        <button class="btn" onclick="exportText()" style="background: #6f42c1; color: white;">📤 내보내기</button>
+                        <button class="btn btn-secondary" onclick="clearText()">🗑️ 지우기</button>
+                    </div>
+                    
+                    <!-- 빠른 템플릿 -->
+                    <div style="margin-top: 25px; padding: 20px; background: #f8f9fa; border-radius: 12px;">
+                        <h4 style="margin-bottom: 15px; color: #333;">⚡ 빠른 템플릿</h4>
+                        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                            <button class="btn" onclick="insertTemplate('case')" style="background: #ffc107; color: #333; font-size: 0.9em;">📋 사례 기록</button>
+                            <button class="btn" onclick="insertTemplate('session')" style="background: #fd7e14; color: white; font-size: 0.9em;">💬 상담 세션</button>
+                            <button class="btn" onclick="insertTemplate('assessment')" style="background: #20c997; color: white; font-size: 0.9em;">📊 평가 보고</button>
+                            <button class="btn" onclick="insertTemplate('treatment')" style="background: #e83e8c; color: white; font-size: 0.9em;">💊 치료 계획</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -611,10 +625,23 @@
                     </div>
                 </div>
 
-                <div style="margin-top: 20px;">
+                <div style="margin-top: 20px; display: flex; gap: 10px; flex-wrap: wrap;">
                     <button class="btn btn-primary" onclick="saveDiary()">💾 일기 저장</button>
                     <button class="btn btn-primary" onclick="analyzeEmotion()">🔍 심리학 연결 분석</button>
-                    <button class="btn btn-secondary" onclick="clearDiary()">지우기</button>
+                    <button class="btn" onclick="copyDiary()" style="background: #17a2b8; color: white;">📋 복사</button>
+                    <button class="btn" onclick="exportDiary()" style="background: #6f42c1; color: white;">📤 내보내기</button>
+                    <button class="btn btn-secondary" onclick="clearDiary()">🗑️ 지우기</button>
+                </div>
+                
+                <!-- 빠른 감정 일기 템플릿 -->
+                <div style="margin-top: 25px; padding: 20px; background: #f8f9fa; border-radius: 12px;">
+                    <h4 style="margin-bottom: 15px; color: #333;">⚡ 빠른 일기 템플릿</h4>
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                        <button class="btn" onclick="insertDiaryTemplate('daily')" style="background: #ffc107; color: #333; font-size: 0.9em;">📅 일상 기록</button>
+                        <button class="btn" onclick="insertDiaryTemplate('emotion')" style="background: #fd7e14; color: white; font-size: 0.9em;">😊 감정 기록</button>
+                        <button class="btn" onclick="insertDiaryTemplate('gratitude')" style="background: #20c997; color: white; font-size: 0.9em;">🙏 감사 일기</button>
+                        <button class="btn" onclick="insertDiaryTemplate('reflection')" style="background: #e83e8c; color: white; font-size: 0.9em;">💭 성찰 일기</button>
+                    </div>
                 </div>
 
                 <div class="psychology-connection" id="psychologyConnection" style="display: none;">
@@ -638,7 +665,14 @@
 
             <!-- 감정 통계 탭 -->
             <div id="stats" class="tab-content">
-                <h3>📊 감정 통계</h3>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h3>📊 감정 통계</h3>
+                    <div style="display: flex; gap: 10px;">
+                        <button class="btn" onclick="exportStats()" style="background: #28a745; color: white; padding: 8px 16px; font-size: 0.9em;">📤 통계 내보내기</button>
+                        <button class="btn" onclick="refreshStats()" style="background: #17a2b8; color: white; padding: 8px 16px; font-size: 0.9em;">🔄 새로고침</button>
+                    </div>
+                </div>
+                
                 <div class="stats-grid" id="statsGrid">
                     <div class="stat-card">
                         <h4>총 일기 수</h4>
@@ -656,6 +690,14 @@
                         <h4>이번 달 일기</h4>
                         <div class="value" id="monthDiaries">0</div>
                     </div>
+                    <div class="stat-card">
+                        <h4>평균 일기 길이</h4>
+                        <div class="value" id="avgLength">0자</div>
+                    </div>
+                    <div class="stat-card">
+                        <h4>연속 기록일</h4>
+                        <div class="value" id="streakDays">0일</div>
+                    </div>
                 </div>
 
                 <div class="chart-container">
@@ -666,6 +708,12 @@
                 <div class="chart-container">
                     <h4 style="margin-bottom: 15px;">최근 30일 감정 추이</h4>
                     <div id="emotionTrend"></div>
+                </div>
+                
+                <!-- 인사이트 섹션 -->
+                <div style="margin-top: 30px; padding: 20px; background: #f8f9fa; border-radius: 12px;">
+                    <h4 style="margin-bottom: 15px;">💡 감정 인사이트</h4>
+                    <div id="emotionInsights"></div>
                 </div>
             </div>
 
@@ -755,9 +803,17 @@
                 <div class="form-group">
                     <label>분석할 텍스트를 입력하세요</label>
                     <textarea id="selfTalkInput" placeholder="예: 나는 항상 실수만 해. 다른 사람들은 다 잘하는데 나만 못해. 나는 가치 없는 사람이야..." style="min-height: 150px;"></textarea>
+                    <div style="margin-top: 10px; display: flex; gap: 10px; flex-wrap: wrap;">
+                        <button class="btn" onclick="loadTextFromKeyboard()" style="background: #17a2b8; color: white; font-size: 0.9em;">⌨️ 키보드 텍스트 불러오기</button>
+                        <button class="btn" onclick="loadTextFromDiary()" style="background: #20c997; color: white; font-size: 0.9em;">📔 최근 일기 불러오기</button>
+                    </div>
                 </div>
                 
-                <button class="btn btn-primary" onclick="analyzeSelfTalk()">🔍 자기 대화 분석하기</button>
+                <div style="margin-top: 20px; display: flex; gap: 10px; flex-wrap: wrap;">
+                    <button class="btn btn-primary" onclick="analyzeSelfTalk()">🔍 자기 대화 분석하기</button>
+                    <button class="btn" onclick="copyAnalysis()" style="background: #6f42c1; color: white;">📋 분석 결과 복사</button>
+                    <button class="btn" onclick="exportAnalysis()" style="background: #28a745; color: white;">📤 분석 내보내기</button>
+                </div>
                 
                 <div id="selfTalkAnalysis" style="display: none; margin-top: 30px;">
                     <div class="analysis-card" style="padding: 20px; background: #f8f9fa; border-radius: 12px; margin-bottom: 20px;">
@@ -1213,9 +1269,155 @@
 
         // 텍스트 지우기
         function clearText() {
-            textInput.value = '';
-            charCount.textContent = '0';
-            suggestionsDiv.style.display = 'none';
+            if (confirm('정말 텍스트를 모두 지우시겠습니까?')) {
+                textInput.value = '';
+                charCount.textContent = '0';
+                suggestionsDiv.style.display = 'none';
+            }
+        }
+
+        // 텍스트 복사
+        function copyText() {
+            const text = textInput.value.trim();
+            if (!text) {
+                alert('복사할 텍스트가 없습니다.');
+                return;
+            }
+            navigator.clipboard.writeText(text).then(() => {
+                alert('텍스트가 클립보드에 복사되었습니다!');
+            }).catch(() => {
+                textInput.select();
+                document.execCommand('copy');
+                alert('텍스트가 클립보드에 복사되었습니다!');
+            });
+        }
+
+        // 텍스트 저장
+        function saveText() {
+            const text = textInput.value.trim();
+            if (!text) {
+                alert('저장할 텍스트가 없습니다.');
+                return;
+            }
+            const title = prompt('저장할 텍스트의 제목을 입력하세요:', `텍스트_${new Date().toISOString().split('T')[0]}`);
+            if (!title) return;
+            
+            const savedTexts = JSON.parse(localStorage.getItem('gpt_keyboard_saved_texts')) || [];
+            savedTexts.push({
+                id: Date.now().toString(),
+                title: title,
+                text: text,
+                date: new Date().toLocaleString('ko-KR'),
+                timestamp: new Date().toISOString()
+            });
+            localStorage.setItem('gpt_keyboard_saved_texts', JSON.stringify(savedTexts));
+            alert('텍스트가 저장되었습니다!');
+        }
+
+        // 텍스트 내보내기
+        function exportText() {
+            const text = textInput.value.trim();
+            if (!text) {
+                alert('내보낼 텍스트가 없습니다.');
+                return;
+            }
+            const filename = prompt('파일 이름을 입력하세요:', `gpt_keyboard_${new Date().toISOString().split('T')[0]}.txt`);
+            if (!filename) return;
+            
+            const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename.endsWith('.txt') ? filename : filename + '.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            alert('파일이 저장되었습니다!');
+        }
+
+        // 빠른 템플릿 삽입
+        function insertTemplate(type) {
+            const templates = {
+                case: `[사례 기록]
+
+내담자 정보:
+- 이름: 
+- 나이: 
+- 성별: 
+
+주 호소 문제:
+- 
+
+현재 상태:
+- 
+
+관찰 사항:
+- 
+
+계획:
+- `,
+                session: `[상담 세션 기록]
+
+일시: ${new Date().toLocaleString('ko-KR')}
+
+세션 내용:
+- 
+
+주요 대화:
+- 
+
+관찰 및 평가:
+- 
+
+다음 세션 계획:
+- `,
+                assessment: `[심리 평가 보고서]
+
+평가 일시: ${new Date().toLocaleString('ko-KR')}
+
+평가 목적:
+- 
+
+평가 도구:
+- 
+
+평가 결과:
+- 
+
+해석:
+- 
+
+권고사항:
+- `,
+                treatment: `[치료 계획]
+
+치료 목표:
+- 단기 목표: 
+- 장기 목표: 
+
+치료 접근법:
+- 
+
+치료 계획:
+- 
+
+예상 기간:
+- 
+
+진행 상황:
+- `
+            };
+            
+            if (templates[type]) {
+                const currentText = textInput.value;
+                const cursorPos = textInput.selectionStart;
+                const newText = currentText.slice(0, cursorPos) + templates[type] + currentText.slice(cursorPos);
+                textInput.value = newText;
+                charCount.textContent = newText.length;
+                textInput.focus();
+                textInput.setSelectionRange(cursorPos + templates[type].length, cursorPos + templates[type].length);
+            }
         }
 
         // 초기 글자 수 표시
@@ -1392,12 +1594,119 @@
 
         // 일기 지우기
         function clearDiary() {
-            diaryInput.value = '';
-            diaryCharCount.textContent = '0';
-            selectedEmotion = null;
-            document.querySelectorAll('.emotion-btn').forEach(btn => {
-                btn.classList.remove('selected');
+            if (confirm('정말 일기 내용을 모두 지우시겠습니까?')) {
+                diaryInput.value = '';
+                diaryCharCount.textContent = '0';
+                selectedEmotion = null;
+                document.querySelectorAll('.emotion-btn').forEach(btn => {
+                    btn.classList.remove('selected');
+                });
+            }
+        }
+
+        // 일기 복사
+        function copyDiary() {
+            const text = diaryInput.value.trim();
+            if (!text) {
+                alert('복사할 일기 내용이 없습니다.');
+                return;
+            }
+            navigator.clipboard.writeText(text).then(() => {
+                alert('일기가 클립보드에 복사되었습니다!');
+            }).catch(() => {
+                diaryInput.select();
+                document.execCommand('copy');
+                alert('일기가 클립보드에 복사되었습니다!');
             });
+        }
+
+        // 일기 내보내기
+        function exportDiary() {
+            const emotion = selectedEmotion || '미선택';
+            const content = diaryInput.value.trim();
+            if (!content) {
+                alert('내보낼 일기 내용이 없습니다.');
+                return;
+            }
+            const text = `[감정 일기]\n\n감정: ${emotion}\n날짜: ${new Date().toLocaleString('ko-KR')}\n\n${content}`;
+            const filename = prompt('파일 이름을 입력하세요:', `diary_${new Date().toISOString().split('T')[0]}.txt`);
+            if (!filename) return;
+            
+            const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename.endsWith('.txt') ? filename : filename + '.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            alert('일기가 저장되었습니다!');
+        }
+
+        // 일기 템플릿 삽입
+        function insertDiaryTemplate(type) {
+            const templates = {
+                daily: `오늘 하루 어떤 일이 있었나요?
+
+주요 일정:
+- 
+
+특별한 일:
+- 
+
+느낀 점:
+- `,
+                emotion: `오늘의 감정을 자세히 기록해보세요.
+
+주요 감정:
+- 
+
+감정의 원인:
+- 
+
+감정이 몸에 미친 영향:
+- 
+
+감정을 어떻게 다뤘나요:
+- `,
+                gratitude: `오늘 감사한 일을 적어보세요.
+
+감사한 일 1:
+- 
+
+감사한 일 2:
+- 
+
+감사한 일 3:
+- 
+
+감사한 마음:
+- `,
+                reflection: `오늘 하루를 돌아보며 성찰해보세요.
+
+잘한 점:
+- 
+
+개선할 점:
+- 
+
+배운 점:
+- 
+
+내일의 다짐:
+- `
+            };
+            
+            if (templates[type]) {
+                const currentText = diaryInput.value;
+                const cursorPos = diaryInput.selectionStart;
+                const newText = currentText.slice(0, cursorPos) + templates[type] + currentText.slice(cursorPos);
+                diaryInput.value = newText;
+                diaryCharCount.textContent = newText.length;
+                diaryInput.focus();
+                diaryInput.setSelectionRange(cursorPos + templates[type].length, cursorPos + templates[type].length);
+            }
         }
 
         // 저장된 일기 불러오기
@@ -1465,6 +1774,36 @@
                     mostEmotion = emotion;
                 }
             }
+            
+            // 평균 일기 길이
+            const totalLength = diaries.reduce((sum, diary) => sum + (diary.content ? diary.content.length : 0), 0);
+            const avgLength = diaries.length > 0 ? Math.round(totalLength / diaries.length) : 0;
+            document.getElementById('avgLength').textContent = avgLength + '자';
+            
+            // 연속 기록일 계산
+            const sortedDiaries = diaries.sort((a, b) => new Date(a.timestamp || a.date) - new Date(b.timestamp || b.date));
+            let streakDays = 0;
+            if (sortedDiaries.length > 0) {
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                let checkDate = new Date(today);
+                
+                for (let i = sortedDiaries.length - 1; i >= 0; i--) {
+                    const diaryDate = new Date(sortedDiaries[i].timestamp || sortedDiaries[i].date);
+                    diaryDate.setHours(0, 0, 0, 0);
+                    
+                    if (diaryDate.getTime() === checkDate.getTime()) {
+                        streakDays++;
+                        checkDate.setDate(checkDate.getDate() - 1);
+                    } else if (diaryDate.getTime() < checkDate.getTime()) {
+                        break;
+                    }
+                }
+            }
+            document.getElementById('streakDays').textContent = streakDays + '일';
+            
+            // 감정 인사이트 생성
+            generateEmotionInsights(diaries, emotionCount);
             document.getElementById('mostEmotion').textContent = mostEmotion;
 
             // 이번 주 일기
