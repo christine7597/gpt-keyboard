@@ -1865,6 +1865,164 @@
                 }).join('') || '<div style="padding: 20px; text-align: center; color: #999;">최근 30일간 일기 데이터가 없습니다.</div>';
         }
 
+        // 감정 인사이트 생성
+        function generateEmotionInsights(diaries, emotionCount) {
+            const insightsDiv = document.getElementById('emotionInsights');
+            if (!insightsDiv) return;
+            
+            if (diaries.length === 0) {
+                insightsDiv.innerHTML = '<p style="color: #999;">일기 데이터가 없어 인사이트를 생성할 수 없습니다.</p>';
+                return;
+            }
+            
+            let insights = [];
+            
+            // 가장 많은 감정 인사이트
+            const sortedEmotions = Object.entries(emotionCount).sort((a, b) => b[1] - a[1]);
+            if (sortedEmotions.length > 0) {
+                const [topEmotion, count] = sortedEmotions[0];
+                const percentage = Math.round((count / diaries.length) * 100);
+                insights.push(`<p>📊 <strong>${topEmotion}</strong>이(가) ${percentage}%로 가장 많이 기록된 감정입니다.</p>`);
+            }
+            
+            // 최근 감정 추이
+            const recent7Days = diaries.filter(d => {
+                const diaryDate = new Date(d.timestamp || d.date);
+                const weekAgo = new Date();
+                weekAgo.setDate(weekAgo.getDate() - 7);
+                return diaryDate >= weekAgo;
+            });
+            
+            if (recent7Days.length > 0) {
+                const recentEmotions = recent7Days.map(d => d.emotion);
+                const mostRecent = recentEmotions[recentEmotions.length - 1];
+                insights.push(`<p>📅 최근 7일간 ${recent7Days.length}개의 일기를 기록하셨고, 가장 최근 감정은 <strong>${mostRecent}</strong>입니다.</p>`);
+            }
+            
+            // 긍정/부정 비율
+            const positiveEmotions = ['기쁨', '평온', '사랑', '흥미'];
+            const negativeEmotions = ['슬픔', '화남', '불안', '피곤'];
+            
+            let positiveCount = 0;
+            let negativeCount = 0;
+            diaries.forEach(d => {
+                if (positiveEmotions.includes(d.emotion)) positiveCount++;
+                else if (negativeEmotions.includes(d.emotion)) negativeCount++;
+            });
+            
+            if (diaries.length > 0) {
+                const positivePercent = Math.round((positiveCount / diaries.length) * 100);
+                const negativePercent = Math.round((negativeCount / diaries.length) * 100);
+                insights.push(`<p>💚 긍정적 감정: ${positivePercent}% | 부정적 감정: ${negativePercent}%</p>`);
+            }
+            
+            insightsDiv.innerHTML = insights.length > 0 ? insights.join('') : '<p style="color: #999;">인사이트를 생성할 수 없습니다.</p>';
+        }
+
+        // 통계 새로고침
+        function refreshStats() {
+            loadStats();
+            alert('통계가 새로고침되었습니다!');
+        }
+
+        // 통계 내보내기
+        function exportStats() {
+            const diaries = JSON.parse(localStorage.getItem('gpt_keyboard_diaries') || '[]');
+            if (diaries.length === 0) {
+                alert('내보낼 통계 데이터가 없습니다.');
+                return;
+            }
+            
+            const stats = {
+                totalDiaries: diaries.length,
+                date: new Date().toLocaleString('ko-KR'),
+                emotionCount: {},
+                diaries: diaries.map(d => ({
+                    date: d.date,
+                    emotion: d.emotion,
+                    contentLength: d.content ? d.content.length : 0
+                }))
+            };
+            
+            diaries.forEach(diary => {
+                stats.emotionCount[diary.emotion] = (stats.emotionCount[diary.emotion] || 0) + 1;
+            });
+            
+            const text = JSON.stringify(stats, null, 2);
+            const filename = prompt('파일 이름을 입력하세요:', `stats_${new Date().toISOString().split('T')[0]}.json`);
+            if (!filename) return;
+            
+            const blob = new Blob([text], { type: 'application/json;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename.endsWith('.json') ? filename : filename + '.json';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            alert('통계가 저장되었습니다!');
+        }
+
+        // 키보드 텍스트 불러오기
+        function loadTextFromKeyboard() {
+            const text = textInput.value.trim();
+            if (!text) {
+                alert('키보드에 입력된 텍스트가 없습니다.');
+                return;
+            }
+            document.getElementById('selfTalkInput').value = text;
+        }
+
+        // 최근 일기 불러오기
+        function loadTextFromDiary() {
+            const diaries = JSON.parse(localStorage.getItem('gpt_keyboard_diaries') || '[]');
+            if (diaries.length === 0) {
+                alert('저장된 일기가 없습니다.');
+                return;
+            }
+            const latestDiary = diaries[diaries.length - 1];
+            document.getElementById('selfTalkInput').value = latestDiary.content || '';
+        }
+
+        // 분석 결과 복사
+        function copyAnalysis() {
+            const analysisDiv = document.getElementById('selfTalkAnalysis');
+            if (!analysisDiv || analysisDiv.style.display === 'none') {
+                alert('먼저 분석을 실행해주세요.');
+                return;
+            }
+            const text = analysisDiv.innerText || analysisDiv.textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                alert('분석 결과가 클립보드에 복사되었습니다!');
+            }).catch(() => {
+                alert('복사에 실패했습니다.');
+            });
+        }
+
+        // 분석 내보내기
+        function exportAnalysis() {
+            const analysisDiv = document.getElementById('selfTalkAnalysis');
+            if (!analysisDiv || analysisDiv.style.display === 'none') {
+                alert('먼저 분석을 실행해주세요.');
+                return;
+            }
+            const text = analysisDiv.innerText || analysisDiv.textContent;
+            const filename = prompt('파일 이름을 입력하세요:', `self_talk_analysis_${new Date().toISOString().split('T')[0]}.txt`);
+            if (!filename) return;
+            
+            const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename.endsWith('.txt') ? filename : filename + '.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            alert('분석 결과가 저장되었습니다!');
+        }
+
         // 심리학 사전 로드
         const psychologyDictionary = {
             '인지 행동 치료': {
